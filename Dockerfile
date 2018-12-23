@@ -62,6 +62,7 @@ RUN set -ex; \
     docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr --with-png-dir=/usr --with-webp-dir=/usr; \
     docker-php-ext-configure zip --with-libzip; \
     docker-php-ext-install \
+        bcmath \
         bz2 \
         exif \
         gd \
@@ -111,6 +112,7 @@ RUN set -ex; \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --virtual .php-ext-rundeps $runDeps; \
+    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/72bb6f65aa902c76c7ca35514f58cf79a293657d/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.8.0; \
     apk del .build-deps
 
 RUN printf "opcache.enable=1\nopcache.enable_cli=1\nopcache.interned_strings_buffer=8\nopcache.max_accelerated_files=10000\nopcache.memory_consumption=128\nopcache.save_comments=1\nopcache.revalidate_freq=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
