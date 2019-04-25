@@ -116,3 +116,8 @@ RUN set -ex; \
     apk del .build-deps
 
 RUN printf "opcache.enable=1\nopcache.enable_cli=1\nopcache.interned_strings_buffer=8\nopcache.max_accelerated_files=10000\nopcache.memory_consumption=128\nopcache.save_comments=1\nopcache.revalidate_freq=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
+COPY docker-entrypoint.sh /usr/local/bin
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+CMD ["php-fpm"]
