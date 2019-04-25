@@ -87,7 +87,7 @@ RUN set -ex; \
     # pecl install imagick-3.4.3; \
     pecl install memcached-3.1.3; \
     # pecl install mongodb-1.5.3; \
-    pecl install rar-4.0.0; \
+    # pecl install rar-4.0.0; \
     pecl install redis-4.3.0; \
     # pecl install smbclient-0.9.0; \
     # pecl install swoole-4.2.9; \
@@ -99,7 +99,7 @@ RUN set -ex; \
         # imagick \
         memcached \
         # mongodb \
-        rar \
+        # rar \
         redis \
         # smbclient \
         # swoole \
