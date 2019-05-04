@@ -1,4 +1,4 @@
-FROM php:7.3.5-fpm-alpine3.9
+FROM quay.io/bohan/library-php:7.3.5-fpm-alpine3.9
 
 RUN set -ex; \
     # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
@@ -9,10 +9,7 @@ RUN set -ex; \
     addgroup -g 33 -S www-data; adduser -G www-data -S -D -H -u 33 www-data
 
 RUN set -ex; \
-    sed -i 's!^listen = 9000!listen = /var/run/php/php7.3-fpm.sock!' /usr/local/etc/php-fpm.d/zz-docker.conf; \
-    printf "listen.owner = www-data\nlisten.group = www-data\nlisten.mode = 0660\n" >> /usr/local/etc/php-fpm.d/zz-docker.conf
-
-RUN set -ex; \
+    apk add --no-cache su-exec; \
     apk add --no-cache --virtual .build-deps \
         $PHPIZE_DEPS \
         libtool \
@@ -55,7 +52,8 @@ RUN set -ex; \
         # required by yaml
         # yaml-dev \
     ; \
-    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.4.0.tar.gz -o maxminddb.tar.gz; \
+    # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
+    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.4.1.tar.gz -o maxminddb.tar.gz; \
     # mkdir /usr/src/maxminddb; \
     # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
     # rm maxminddb.tar.gz; \
@@ -72,7 +70,7 @@ RUN set -ex; \
         intl \
         # ldap \
         # /usr/src/maxminddb/ext \
-        mysqli \
+        # mysqli \
         opcache \
         pcntl \
         pdo_mysql \
@@ -81,16 +79,27 @@ RUN set -ex; \
         zip \
     ; \
     # rm -r /usr/src/maxminddb; \
+    # https://pecl.php.net/package/APCu
     pecl install APCu-5.1.17; \
+    # https://pecl.php.net/package/geoip
     # pecl install geoip-1.1.1; \
+    # https://pecl.php.net/package/gmagick
     # pecl install gmagick-2.0.5RC1; \
-    # pecl install imagick-3.4.3; \
+    # https://pecl.php.net/package/imagick
+    # pecl install imagick-3.4.4; \
+    # https://pecl.php.net/package/memcached
     pecl install memcached-3.1.3; \
+    # https://pecl.php.net/package/mongodb
     # pecl install mongodb-1.5.3; \
+    # https://pecl.php.net/package/rar
     # pecl install rar-4.0.0; \
+    # https://pecl.php.net/package/redis
     pecl install redis-4.3.0; \
-    # pecl install smbclient-0.9.0; \
-    # pecl install swoole-4.2.9; \
+    # https://pecl.php.net/package/smbclient
+    # pecl install smbclient-1.0.0; \
+    # https://pecl.php.net/package/swoole
+    # pecl install swoole-4.3.3; \
+    # https://pecl.php.net/package/yaml
     # pecl install yaml-2.0.4; \
     docker-php-ext-enable \
         apcu \
@@ -116,9 +125,6 @@ RUN set -ex; \
     apk del .build-deps
 
 RUN printf "opcache.enable=1\nopcache.enable_cli=1\nopcache.interned_strings_buffer=8\nopcache.max_accelerated_files=10000\nopcache.memory_consumption=128\nopcache.save_comments=1\nopcache.revalidate_freq=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
-
-RUN set -ex; \
-    apk add --no-cache su-exec
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
