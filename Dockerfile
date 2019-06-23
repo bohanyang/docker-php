@@ -70,7 +70,7 @@ RUN set -ex; \
         intl \
         # ldap \
         # /usr/src/maxminddb/ext \
-        # mysqli \
+        mysqli \
         opcache \
         pcntl \
         pdo_mysql \
