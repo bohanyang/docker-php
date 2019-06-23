@@ -28,7 +28,7 @@ RUN set -ex; \
         # required by imap
         # imap-dev \
         # required by imagick
-        # imagemagick-dev \
+        imagemagick-dev \
         # required by bz2
         bzip2-dev \
         # required by gd
@@ -86,7 +86,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/gmagick
     # pecl install gmagick-2.0.5RC1; \
     # https://pecl.php.net/package/imagick
-    # pecl install imagick-3.4.4; \
+    pecl install imagick-3.4.4; \
     # https://pecl.php.net/package/memcached
     pecl install memcached-3.1.3; \
     # https://pecl.php.net/package/mongodb
@@ -105,7 +105,7 @@ RUN set -ex; \
         apcu \
         # geoip \
         # gmagick \
-        # imagick \
+        imagick \
         memcached \
         # mongodb \
         # rar \
@@ -124,7 +124,17 @@ RUN set -ex; \
     curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/e831e1e4d6cabfb11fa9657103cf728e6eb9e295/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.8.5; \
     apk del .build-deps
 
-RUN printf "opcache.enable=1\nopcache.enable_cli=1\nopcache.interned_strings_buffer=8\nopcache.max_accelerated_files=10000\nopcache.memory_consumption=128\nopcache.save_comments=1\nopcache.revalidate_freq=1\n" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+RUN { \
+        echo 'opcache.enable=1'; \
+        echo 'opcache.enable_cli=1'; \
+        echo 'opcache.interned_strings_buffer=8'; \
+        echo 'opcache.max_accelerated_files=10000'; \
+        echo 'opcache.memory_consumption=128'; \
+        echo 'opcache.save_comments=1'; \
+        echo 'opcache.revalidate_freq=1'; \
+    } >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini; \
+    echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
+    echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
