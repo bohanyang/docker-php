@@ -26,7 +26,7 @@ RUN set -ex; \
         # required by intl
         icu-dev \
         # required by imap
-        imap-dev \
+        # imap-dev \
         # required by imagick
         imagemagick-dev \
         # required by bz2
@@ -34,31 +34,31 @@ RUN set -ex; \
         # required by gd
         libjpeg-turbo-dev \
         # required by maxminddb
-        libmaxminddb-dev \
+        # libmaxminddb-dev \
         # required by memcached
-        libmemcached-dev \
+        # libmemcached-dev \
         # required by gd
         libpng-dev \
         # required by gd
         libwebp-dev \
+        # required by soap, xmlrpc
+        libxml2-dev \
         # required by zip
         libzip-dev \
         # required by ldap
-        openldap-dev \
+        # openldap-dev \
         # required by pdo_pgsql
         # postgresql-dev \
         # required by smbclient
-        samba-dev \
-        # required by xmlrpc
-        libxml2-dev \
+        # samba-dev \
         # required by yaml
         # yaml-dev \
     ; \
     # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
-    curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.4.1.tar.gz -o maxminddb.tar.gz; \
-    mkdir /usr/src/maxminddb; \
-    tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
-    rm maxminddb.tar.gz; \
+    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.4.1.tar.gz -o maxminddb.tar.gz; \
+    # mkdir /usr/src/maxminddb; \
+    # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
+    # rm maxminddb.tar.gz; \
     docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr --with-png-dir=/usr --with-webp-dir=/usr; \
     docker-php-ext-configure zip --with-libzip; \
     docker-php-ext-install \
@@ -68,21 +68,21 @@ RUN set -ex; \
         gd \
         gettext \
         gmp \
-        imap \
+        # imap \
         intl \
-        ldap \
-        /usr/src/maxminddb/ext \
+        # ldap \
+        # /usr/src/maxminddb/ext \
         mysqli \
         opcache \
         pcntl \
         pdo_mysql \
         # pdo_pgsql \
-        soap \
+        # soap \
         sockets \
-        xmlrpc \
+        # xmlrpc \
         zip \
     ; \
-    rm -r /usr/src/maxminddb; \
+    # rm -r /usr/src/maxminddb; \
     # https://pecl.php.net/package/APCu
     pecl install APCu-5.1.17; \
     # https://pecl.php.net/package/geoip
@@ -92,7 +92,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/imagick
     pecl install imagick-3.4.4; \
     # https://pecl.php.net/package/memcached
-    pecl install memcached-3.1.3; \
+    # pecl install memcached-3.1.3; \
     # https://pecl.php.net/package/mongodb
     # pecl install mongodb-1.5.3; \
     # https://pecl.php.net/package/rar
@@ -100,9 +100,9 @@ RUN set -ex; \
     # https://pecl.php.net/package/redis
     pecl install redis-4.3.0; \
     # https://pecl.php.net/package/smbclient
-    pecl install smbclient-1.0.0; \
+    # pecl install smbclient-1.0.0; \
     # https://pecl.php.net/package/swoole
-    pecl install swoole-4.3.5; \
+    # pecl install swoole-4.3.5; \
     # https://pecl.php.net/package/yaml
     # pecl install yaml-2.0.4; \
     docker-php-ext-enable \
@@ -110,12 +110,12 @@ RUN set -ex; \
         # geoip \
         # gmagick \
         imagick \
-        memcached \
+        # memcached \
         # mongodb \
         # rar \
         redis \
-        smbclient \
-        swoole \
+        # smbclient \
+        # swoole \
         # yaml \
     ; \
     runDeps="$( \
