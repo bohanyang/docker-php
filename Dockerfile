@@ -49,6 +49,8 @@ RUN set -ex; \
         # postgresql-dev \
         # required by smbclient
         # samba-dev \
+        # required by xmlrpc
+        libxml2-dev \
         # required by yaml
         # yaml-dev \
     ; \
@@ -75,7 +77,9 @@ RUN set -ex; \
         pcntl \
         pdo_mysql \
         # pdo_pgsql \
+        soap \
         sockets \
+        xmlrpc \
         zip \
     ; \
     # rm -r /usr/src/maxminddb; \
