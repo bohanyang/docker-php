@@ -1,4 +1,4 @@
-FROM php:7.3.7-fpm-alpine3.9
+FROM php:7.3.7-fpm-alpine3.10
 
 RUN set -ex; \
     # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
