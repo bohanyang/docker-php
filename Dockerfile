@@ -1,4 +1,4 @@
-FROM php:7.3.6-fpm-alpine3.9
+FROM php:7.3.7-fpm-alpine3.9
 
 RUN set -ex; \
     # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
@@ -94,15 +94,15 @@ RUN set -ex; \
     # https://pecl.php.net/package/memcached
     # pecl install memcached-3.1.3; \
     # https://pecl.php.net/package/mongodb
-    # pecl install mongodb-1.5.3; \
+    # pecl install mongodb-1.5.5; \
     # https://pecl.php.net/package/rar
     # pecl install rar-4.0.0; \
     # https://pecl.php.net/package/redis
-    pecl install redis-4.3.0; \
+    pecl install redis-5.0.0; \
     # https://pecl.php.net/package/smbclient
     # pecl install smbclient-1.0.0; \
     # https://pecl.php.net/package/swoole
-    # pecl install swoole-4.3.5; \
+    # pecl install swoole-4.4.0; \
     # https://pecl.php.net/package/yaml
     # pecl install yaml-2.0.4; \
     docker-php-ext-enable \
@@ -125,7 +125,7 @@ RUN set -ex; \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --virtual .php-ext-rundeps $runDeps; \
-    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/e831e1e4d6cabfb11fa9657103cf728e6eb9e295/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.8.5; \
+    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/e831e1e4d6cabfb11fa9657103cf728e6eb9e295/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.8.6; \
     apk del .build-deps
 
 RUN { \
