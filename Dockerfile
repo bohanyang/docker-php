@@ -1,4 +1,4 @@
-FROM php:7.3.7-fpm-alpine3.10
+FROM php:7.3.8-fpm-alpine3.10
 
 RUN set -ex; \
     # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
@@ -102,7 +102,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/smbclient
     # pecl install smbclient-1.0.0; \
     # https://pecl.php.net/package/swoole
-    # pecl install swoole-4.4.0; \
+    # pecl install swoole-4.4.3; \
     # https://pecl.php.net/package/yaml
     # pecl install yaml-2.0.4; \
     docker-php-ext-enable \
@@ -125,7 +125,7 @@ RUN set -ex; \
             | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )"; \
     apk add --virtual .php-ext-rundeps $runDeps; \
-    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/e831e1e4d6cabfb11fa9657103cf728e6eb9e295/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.8.6; \
+    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/fb22b78362d31c0d2bf516d1f8cdfd2745caa431/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.9.0; \
     apk del .build-deps
 
 RUN { \
