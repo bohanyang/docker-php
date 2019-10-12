@@ -1,4 +1,4 @@
-FROM php:7.3.9-fpm-alpine3.10
+FROM php:7.3.10-fpm-alpine3.10
 
 RUN set -ex; \
     # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
@@ -55,7 +55,7 @@ RUN set -ex; \
         # yaml-dev \
     ; \
     # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
-    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.4.1.tar.gz -o maxminddb.tar.gz; \
+    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.5.0.tar.gz -o maxminddb.tar.gz; \
     # mkdir /usr/src/maxminddb; \
     # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
     # rm maxminddb.tar.gz; \
@@ -92,9 +92,9 @@ RUN set -ex; \
     # https://pecl.php.net/package/imagick
     pecl install imagick-3.4.4; \
     # https://pecl.php.net/package/memcached
-    # pecl install memcached-3.1.3; \
+    # pecl install memcached-3.1.4; \
     # https://pecl.php.net/package/mongodb
-    # pecl install mongodb-1.5.5; \
+    # pecl install mongodb-1.6.0; \
     # https://pecl.php.net/package/rar
     # pecl install rar-4.0.0; \
     # https://pecl.php.net/package/redis
@@ -102,7 +102,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/smbclient
     # pecl install smbclient-1.0.0; \
     # https://pecl.php.net/package/swoole
-    # pecl install swoole-4.4.5; \
+    # pecl install swoole-4.4.7; \
     # https://pecl.php.net/package/yaml
     # pecl install yaml-2.0.4; \
     docker-php-ext-enable \
@@ -140,7 +140,8 @@ RUN { \
         echo 'opcache.revalidate_freq=1'; \
     } >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini; \
     echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
-    echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini
+    echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
+    echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
