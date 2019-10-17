@@ -94,7 +94,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/memcached
     # pecl install memcached-3.1.4; \
     # https://pecl.php.net/package/mongodb
-    # pecl install mongodb-1.6.0; \
+    pecl install mongodb-1.6.0; \
     # https://pecl.php.net/package/rar
     # pecl install rar-4.0.0; \
     # https://pecl.php.net/package/redis
@@ -111,7 +111,7 @@ RUN set -ex; \
         # gmagick \
         imagick \
         # memcached \
-        # mongodb \
+        mongodb \
         # rar \
         redis \
         # smbclient \
