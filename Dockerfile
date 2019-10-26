@@ -1,136 +1,165 @@
-FROM php:7.3.10-fpm-alpine3.10
+FROM php:7.3.11-fpm-buster
 
 RUN set -ex; \
-    # delete the user xfs (uid 33) for the user www-data (the same uid 33 in Debian) that will be created soon
-    deluser xfs; \
-    # delete the existing www-data user (uid 82)
-    deluser www-data; \
-    # create a new user and its group www-data with uid 33
-    addgroup -g 33 -S www-data; adduser -G www-data -S -D -H -u 33 www-data
-
-RUN set -ex; \
-    apk add --no-cache su-exec; \
-    apk add --no-cache --virtual .build-deps \
-        $PHPIZE_DEPS \
-        libtool \
-        # required by gd
-        freetype-dev \
-        # required by geoip
-        # geoip-dev \
-        # required by gettext
-        gettext-dev \
-        # required by gmp
-        gmp-dev \
-        # required by gmagick
-        # graphicsmagick-dev \
-        # required by intl
-        icu-dev \
-        # required by imap
-        # imap-dev \
-        # required by imagick
-        imagemagick-dev \
-        # required by bz2
-        bzip2-dev \
-        # required by gd
-        libjpeg-turbo-dev \
-        # required by maxminddb
-        # libmaxminddb-dev \
-        # required by memcached
-        # libmemcached-dev \
-        # required by gd
-        libpng-dev \
-        # required by gd
-        libwebp-dev \
-        # required by soap, xmlrpc
-        libxml2-dev \
-        # required by zip
-        libzip-dev \
-        # required by ldap
-        # openldap-dev \
-        # required by pdo_pgsql
-        # postgresql-dev \
-        # required by smbclient
-        # samba-dev \
-        # required by yaml
-        # yaml-dev \
+    \
+    SU_EXEC_VERSION=212b75144bbc06722fbd7661f651390dc47a43d1; \
+    \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        unzip \
     ; \
-    # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
-    # curl -fsSL https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v1.5.0.tar.gz -o maxminddb.tar.gz; \
+    rm -rf /var/lib/apt/lists/*; \
+    \
+    curl -fsSL -o su-exec.tar.gz "https://github.com/ncopa/su-exec/archive/$SU_EXEC_VERSION.tar.gz"; \
+    tar -xf su-exec.tar.gz; \
+    rm su-exec.tar.gz; \
+    \
+    make -C "su-exec-$SU_EXEC_VERSION"; \
+    mv "su-exec-$SU_EXEC_VERSION/su-exec" /usr/local/bin; \
+    rm -r "su-exec-$SU_EXEC_VERSION"
+
+RUN set -ex; \
+    \
+    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/193000/instantclient-basiclite-linux.x64-19.3.0.0.0dbru.zip; \
+    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/193000/instantclient-sdk-linux.x64-19.3.0.0.0dbru.zip; \
+    # INSTANTCLIENT_VERSION=19.3; \
+    # INSTANTCLIENT_DIR=instantclient_19_3; \
+    # PHP_EXT_MAXMINDDB_VERSION=v1.5.0; \
+    PHP_EXT_APCU_VERSION=5.1.17; \
+    # PHP_EXT_MEMCACHED_VERSION=3.1.4; \
+    # PHP_EXT_MONGODB_VERSION=1.6.0; \
+    # PHP_EXT_OCI8_VERSION=2.2.0; \
+    PHP_EXT_REDIS_VERSION=5.0.2; \
+    # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
+    # PHP_EXT_IMAGICK_VERSION=3.4.4; \
+    # PHP_EXT_YAML_VERSION=2.0.4; \
+    # PHP_EXT_SWOOLE_VERSION=4.4.7; \
+    # PHP_EXT_GEOIP_VERSION=1.1.1; \
+    \
+    savedAptMark="$(apt-mark showmanual)"; \
+    \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        # libaio1 \
+        libbz2-dev \
+        # libfreetype6-dev \
+        libgmp-dev \
+        libicu-dev \
+        # libjpeg-dev \
+        # libmaxminddb-dev \
+        # libmemcached-dev \
+        # libpng-dev \
+        # libpq-dev \
+        # libwebp-dev \
+        libzip-dev \
+        # zlib1g-dev \
+        # libldap2-dev \
+        # libc-client-dev \
+        # libkrb5-dev \
+        # libxml2-dev \
+        # libsmbclient-dev \
+        # libmagickwand-dev \
+        # libyaml-dev \
+        # libgeoip-dev \
+    ; \
+    \
+    # curl -fsSL \
+    #     -o instantclient.zip "$INSTANTCLIENT_URL" \
+    #     -o instantclient-sdk.zip "$INSTANTCLIENT_SDK_URL" \
+    # ; \
+    # unzip -q instantclient.zip; \
+    # unzip -q instantclient-sdk.zip; \
+    # rm \
+    #     instantclient.zip \
+    #     instantclient-sdk.zip \
+    # ; \
+    \
+    # rm -rf "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib"; \
+    # mkdir -p "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64"; \
+    # mv "$INSTANTCLIENT_DIR" "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib"; \
+    # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
+    # ldconfig; \
+    \
+    # curl -fsSL -o maxminddb.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
     # mkdir /usr/src/maxminddb; \
     # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
     # rm maxminddb.tar.gz; \
-    docker-php-ext-configure gd --with-freetype-dir=/usr --with-jpeg-dir=/usr --with-png-dir=/usr --with-webp-dir=/usr; \
-    docker-php-ext-configure zip --with-libzip; \
-    docker-php-ext-install \
+    \
+    # debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
+    # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
+    # docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
+    # docker-php-ext-configure gd \
+    #     --with-freetype-dir=/usr \
+    #     --with-png-dir=/usr \
+    #     --with-jpeg-dir=/usr \
+    #     --with-webp-dir=/usr \
+    # ; \
+    docker-php-ext-install -j "$(nproc)" \
         bcmath \
         bz2 \
         exif \
-        gd \
+        # /usr/src/maxminddb/ext \
+        # gd \
         gettext \
         gmp \
-        # imap \
         intl \
-        # ldap \
-        # /usr/src/maxminddb/ext \
         mysqli \
         opcache \
         pcntl \
         pdo_mysql \
         # pdo_pgsql \
-        # soap \
         sockets \
-        # xmlrpc \
         zip \
-    ; \
-    # rm -r /usr/src/maxminddb; \
-    # https://pecl.php.net/package/APCu
-    pecl install APCu-5.1.17; \
-    # https://pecl.php.net/package/geoip
-    # pecl install geoip-1.1.1; \
-    # https://pecl.php.net/package/gmagick
-    # pecl install gmagick-2.0.5RC1; \
-    # https://pecl.php.net/package/imagick
-    pecl install imagick-3.4.4; \
-    # https://pecl.php.net/package/memcached
-    # pecl install memcached-3.1.4; \
-    # https://pecl.php.net/package/mongodb
-    pecl install mongodb-1.6.0; \
-    # https://pecl.php.net/package/rar
-    # pecl install rar-4.0.0; \
-    # https://pecl.php.net/package/redis
-    pecl install redis-5.0.2; \
-    # https://pecl.php.net/package/smbclient
-    # pecl install smbclient-1.0.0; \
-    # https://pecl.php.net/package/swoole
-    # pecl install swoole-4.4.7; \
-    # https://pecl.php.net/package/yaml
-    # pecl install yaml-2.0.4; \
-    docker-php-ext-enable \
+        # ldap \
+        # soap \
+        # xmlrpc \
+        # imap \
+	; \
+    \
+    pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
+    # pecl install "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
+    # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
+    # echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
+    pecl install "redis-$PHP_EXT_REDIS_VERSION"; \
+    # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
+    # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
+    # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
+    # pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
+    # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
+    \
+	docker-php-ext-enable \
         apcu \
-        # geoip \
-        # gmagick \
-        imagick \
         # memcached \
-        mongodb \
-        # rar \
+        # mongodb \
+        # oci8 \
         redis \
         # smbclient \
-        # swoole \
+        # imagick \
         # yaml \
+        # swoole \
+        # geoip \
     ; \
-    runDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/lib/php/extensions \
-            | tr ',' '\n' \
-            | sort -u \
-            | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }' \
-    )"; \
-    apk add --virtual .php-ext-rundeps $runDeps; \
-    # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    # https://getcomposer.org/
-    curl -fsSL https://raw.githubusercontent.com/composer/getcomposer.org/fb22b78362d31c0d2bf516d1f8cdfd2745caa431/web/installer | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version=1.9.0; \
-    apk del .build-deps
+    apt-mark auto '.*' > /dev/null; \
+    apt-mark manual $savedAptMark; \
+    ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
+        | awk '/=>/ { print $3 }' \
+        | sort -u \
+        | xargs -r dpkg-query -S \
+        | cut -d: -f1 \
+        | sort -u \
+        | xargs -rt apt-mark manual \
+    ; \
+    apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    rm -rf /var/lib/apt/lists/*
 
-RUN { \
+RUN set -ex; \
+    \
+    COMPOSER_VERSION=1.9.0; \
+    COMPOSER_INSTALLER_VERSION=fb22b78362d31c0d2bf516d1f8cdfd2745caa431; \
+    \
+    curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
+    \
+    { \
         echo 'opcache.enable=1'; \
         echo 'opcache.enable_cli=1'; \
         echo 'opcache.interned_strings_buffer=8'; \
@@ -138,9 +167,12 @@ RUN { \
         echo 'opcache.memory_consumption=128'; \
         echo 'opcache.save_comments=1'; \
         echo 'opcache.revalidate_freq=1'; \
-    } >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini; \
+    } > /usr/local/etc/php/conf.d/opcache-recommended.ini; \
+    \
     echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
+    \
     echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
+    \
     echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini
 
 COPY docker-entrypoint.sh /usr/local/bin
