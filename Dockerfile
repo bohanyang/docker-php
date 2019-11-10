@@ -173,7 +173,7 @@ RUN set -ex; \
     \
     echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
     \
-    echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini \
+    echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
     \
     echo 'pm.max_children = 16' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
