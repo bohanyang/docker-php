@@ -10,9 +10,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker push docker.pkg.github.com/${{ github.repository }}/${{ github.ref }}:${{ github.sha }}
     - name: Login
       run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ github.repository }}/${{ github.ref }}:${{ github.sha }}
     - name: Push
       run: docker push docker.pkg.github.com/${{ github.repository }}/${{ github.ref }}:${{ github.sha }}
