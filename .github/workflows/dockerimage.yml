@@ -13,6 +13,10 @@ jobs:
     - name: Login
       run: docker login docker.pkg.github.com -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ github.repository }}/${{ github.ref }}:${{ github.sha }}
+      run: docker build . --file Dockerfile --tag docker.pkg.github.com/${{ github.repository }}/${GITHUB_REF##*/}:latest
+    - name: Tag
+      run: docker tag docker.pkg.github.com/${{ github.repository }}/${GITHUB_REF##*/}:latest docker.pkg.github.com/${{ github.repository }}/${GITHUB_REF##*/}:${{ github.sha }}
     - name: Push
-      run: docker push docker.pkg.github.com/${{ github.repository }}/${{ github.ref }}:${{ github.sha }}
+      run: |
+        docker push docker.pkg.github.com/${{ github.repository }}/${GITHUB_REF##*/}:${{ github.sha }};
+        docker push docker.pkg.github.com/${{ github.repository }}/${GITHUB_REF##*/}:latest
