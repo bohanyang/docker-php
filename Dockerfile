@@ -1,4 +1,4 @@
-FROM php:7.3.11-fpm-buster
+FROM php:7.3.12-fpm-buster
 
 RUN set -ex; \
     \
@@ -20,20 +20,20 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/193000/instantclient-basiclite-linux.x64-19.3.0.0.0dbru.zip; \
-    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/193000/instantclient-sdk-linux.x64-19.3.0.0.0dbru.zip; \
-    # INSTANTCLIENT_VERSION=19.3; \
-    # INSTANTCLIENT_DIR=instantclient_19_3; \
+    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-basiclite-linux.x64-19.5.0.0.0dbru.zip; \
+    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip; \
+    # INSTANTCLIENT_VERSION=19.5; \
+    # INSTANTCLIENT_DIR=instantclient_19_5; \
     # PHP_EXT_MAXMINDDB_VERSION=v1.5.0; \
-    PHP_EXT_APCU_VERSION=5.1.17; \
+    PHP_EXT_APCU_VERSION=5.1.18; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.4; \
     # PHP_EXT_MONGODB_VERSION=1.6.0; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
-    PHP_EXT_REDIS_VERSION=5.0.2; \
+    PHP_EXT_REDIS_VERSION=5.1.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
-    # PHP_EXT_SWOOLE_VERSION=4.4.7; \
+    # PHP_EXT_SWOOLE_VERSION=4.4.12; \
     # PHP_EXT_GEOIP_VERSION=1.1.1; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
@@ -154,7 +154,7 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.9.0; \
+    COMPOSER_VERSION=1.9.1; \
     COMPOSER_INSTALLER_VERSION=fb22b78362d31c0d2bf516d1f8cdfd2745caa431; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
@@ -175,7 +175,7 @@ RUN set -ex; \
     \
     echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
     \
-    echo 'pm.max_children = 16' >> /usr/local/etc/php-fpm.d/zz-docker.conf
+    echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
