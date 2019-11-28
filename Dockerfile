@@ -1,4 +1,4 @@
-FROM php:7.3.12-fpm-buster
+FROM docker.pkg.github.com/brentybh/docker-php/php:6ed158a7c3182f91de40178a639344014c55d06b
 
 RUN set -ex; \
     \
@@ -87,7 +87,7 @@ RUN set -ex; \
     \
     # debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
-    # docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
+    # PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     # docker-php-ext-configure gd \
     #     --with-freetype-dir=/usr \
     #     --with-png-dir=/usr \
