@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/brentybh/docker-php/php:6ed158a7c3182f91de40178a639344014c55d06b
+FROM php:7.4.0-fpm-buster
 
 RUN set -ex; \
     \
