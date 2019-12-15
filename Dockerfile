@@ -24,10 +24,10 @@ RUN set -ex; \
     # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip; \
     # INSTANTCLIENT_VERSION=19.5; \
     # INSTANTCLIENT_DIR=instantclient_19_5; \
-    # PHP_EXT_MAXMINDDB_VERSION=v1.5.0; \
+    # PHP_EXT_MAXMINDDB_VERSION=1.5.1; \
     PHP_EXT_APCU_VERSION=5.1.18; \
-    # PHP_EXT_MEMCACHED_VERSION=3.1.4; \
-    # PHP_EXT_MONGODB_VERSION=1.6.0; \
+    # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
+    # PHP_EXT_MONGODB_VERSION=1.6.1; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
     PHP_EXT_REDIS_VERSION=5.1.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
@@ -80,7 +80,7 @@ RUN set -ex; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
-    # curl -fsSL -o maxminddb.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
+    # curl -fsSL -o maxminddb.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
     # mkdir /usr/src/maxminddb; \
     # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
     # rm maxminddb.tar.gz; \
@@ -155,7 +155,7 @@ RUN set -ex; \
 RUN set -ex; \
     \
     COMPOSER_VERSION=1.9.1; \
-    COMPOSER_INSTALLER_VERSION=fb22b78362d31c0d2bf516d1f8cdfd2745caa431; \
+    COMPOSER_INSTALLER_VERSION=0659b45afd64e9fcda2fcc620762e23de326acbd; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
