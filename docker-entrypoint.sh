@@ -14,4 +14,7 @@ if [ -n "$PHP_FPM_LISTEN" ]; then
   sed -i "s,^listen = 9000,listen = $PHP_FPM_LISTEN," /usr/local/etc/php-fpm.d/zz-docker.conf
 fi
 
+mkdir -p /var/www/.composer
+chown -R www-data:www-data /var/www/.composer
+
 exec docker-php-entrypoint "$@"
