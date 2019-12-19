@@ -1,8 +1,6 @@
 name: Docker Image CI
 
-on:
-  create:
-    tags:
+on: [push]
 
 env:
   DOCKER_HUB_USERNAME: bohan
