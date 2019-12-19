@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - *
+
+env:
+  DOCKER_HUB_USERNAME: bohan
+  DOCKER_IMAGE_REPO: bohan/php
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Login
+      run: docker login -u "$DOCKER_HUB_USERNAME" -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag "$DOCKER_IMAGE_REPO:latest"
+    - name: Test
+      run: docker run --rm "$DOCKER_IMAGE_REPO:latest" php -i
+    - name: Tag
+      run: docker tag "$DOCKER_IMAGE_REPO:latest" "$DOCKER_IMAGE_REPO:${GITHUB_REF##*/}"
+    - name: Push
+      run: |
+        docker push "$DOCKER_IMAGE_REPO:${GITHUB_REF##*/}";
+        docker push "$DOCKER_IMAGE_REPO:latest"
