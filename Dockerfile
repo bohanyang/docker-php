@@ -1,4 +1,4 @@
-FROM php:7.4.0-fpm-buster
+FROM php:7.4.1-fpm-buster
 
 RUN set -ex; \
     \
@@ -29,7 +29,7 @@ RUN set -ex; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # PHP_EXT_MONGODB_VERSION=1.6.1; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
-    PHP_EXT_REDIS_VERSION=5.1.1; \
+    # PHP_EXT_REDIS_VERSION=5.1.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
@@ -120,7 +120,7 @@ RUN set -ex; \
     # pecl install "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     # echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
-    pecl install "redis-$PHP_EXT_REDIS_VERSION"; \
+    # pecl install "redis-$PHP_EXT_REDIS_VERSION"; \
     # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
     # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
@@ -132,7 +132,7 @@ RUN set -ex; \
         # memcached \
         # mongodb \
         # oci8 \
-        redis \
+        # redis \
         # smbclient \
         # imagick \
         # yaml \
