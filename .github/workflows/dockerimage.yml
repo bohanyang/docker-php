@@ -1,9 +1,8 @@
 name: Docker Image CI
 
 on:
-  push:
-    branches: 
-      - refs/tags/*
+  create:
+    tags:
 
 env:
   DOCKER_HUB_USERNAME: bohan
