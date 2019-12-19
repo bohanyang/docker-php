@@ -1,8 +1,9 @@
 name: Docker Image CI
 
-push:
-  tags:
-  - "v*"
+on:
+  push:
+    tags:
+    - "v*"
 
 env:
   DOCKER_HUB_USERNAME: bohan
