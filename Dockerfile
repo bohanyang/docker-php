@@ -24,7 +24,7 @@ RUN set -ex; \
     # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip; \
     # INSTANTCLIENT_VERSION=19.5; \
     # INSTANTCLIENT_DIR=instantclient_19_5; \
-    # PHP_EXT_MAXMINDDB_VERSION=1.5.1; \
+    # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     PHP_EXT_APCU_VERSION=5.1.18; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # PHP_EXT_MONGODB_VERSION=1.6.1; \
@@ -33,7 +33,7 @@ RUN set -ex; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
-    # PHP_EXT_SWOOLE_VERSION=4.4.12; \
+    # PHP_EXT_SWOOLE_VERSION=4.4.14; \
     # PHP_EXT_GEOIP_VERSION=1.1.1; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
