@@ -1,4 +1,4 @@
-FROM php:7.4.1-fpm-buster
+FROM php:7.4.2-fpm-buster
 
 RUN set -ex; \
     \
@@ -154,8 +154,8 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.9.1; \
-    COMPOSER_INSTALLER_VERSION=0659b45afd64e9fcda2fcc620762e23de326acbd; \
+    COMPOSER_VERSION=1.9.2; \
+    COMPOSER_INSTALLER_VERSION=684f5c9db19cc4230f31b2d15ae6671bafdebd72; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
