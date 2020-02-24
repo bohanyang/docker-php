@@ -24,20 +24,20 @@ RUN set -ex; \
     INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     INSTANTCLIENT_VERSION=19.6; \
     INSTANTCLIENT_DIR=instantclient_19_6; \
-    PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     PHP_EXT_APCU_VERSION=5.1.18; \
+    PHP_EXT_GEOIP_VERSION=1.1.1; \
     PHP_EXT_IGBINARY_VERSION=3.1.2; \
+    PHP_EXT_IMAGICK_VERSION=3.4.4; \
     PHP_EXT_LZF_VERSION=1.6.7; \
+    PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     PHP_EXT_MONGODB_VERSION=1.7.2; \
     PHP_EXT_MSGPACK_VERSION=2.1.0beta1; \
     PHP_EXT_OCI8_VERSION=2.2.0; \
     PHP_EXT_REDIS_VERSION=5.1.1; \
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
-    PHP_EXT_IMAGICK_VERSION=3.4.4; \
-    PHP_EXT_YAML_VERSION=2.0.4; \
     PHP_EXT_SWOOLE_VERSION=4.4.16; \
-    PHP_EXT_GEOIP_VERSION=1.1.1; \
+    PHP_EXT_YAML_VERSION=2.0.4; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
@@ -45,25 +45,25 @@ RUN set -ex; \
     apt-get install -y --no-install-recommends \
         libaio1 \
         libbz2-dev \
+        libc-client-dev \
         libfreetype6-dev \
+        libgeoip-dev \
         libgmp-dev \
         libicu-dev \
         libjpeg-dev \
+        libkrb5-dev \
+        libldap2-dev \
+        libmagickwand-dev \
         libmaxminddb-dev \
         libmemcached-dev \
         libpng-dev \
         libpq-dev \
+        libsmbclient-dev \
         libwebp-dev \
+        libxml2-dev \
+        libyaml-dev \
         libzip-dev \
         zlib1g-dev \
-        libldap2-dev \
-        libc-client-dev \
-        libkrb5-dev \
-        libxml2-dev \
-        libsmbclient-dev \
-        libmagickwand-dev \
-        libyaml-dev \
-        libgeoip-dev \
     ; \
     \
     curl -fsSL \
@@ -83,17 +83,30 @@ RUN set -ex; \
     ldconfig; \
     \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
+    pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
+    pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
     pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
-    pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
+    pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
     pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
-    pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
-    pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
     pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
-    pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
-    ls -l /usr/src; \
+    pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
+    \
+    docker-php-ext-enable \
+        apcu \
+        geoip \
+        igbinary \
+        imagick \
+        lzf \
+        mongodb \
+        msgpack \
+        oci8 \
+        smbclient \
+        swoole \
+        yaml \
+    ; \
     \
     mkdir -p /usr/src/php/ext; \
     touch /usr/src/php/.docker-delete-me; \
@@ -139,22 +152,6 @@ RUN set -ex; \
         zip \
 	; \
     \
-	docker-php-ext-enable \
-        apcu \
-        igbinary \
-        lzf \
-        memcached \
-        mongodb \
-        msgpack \
-        oci8 \
-        redis \
-        smbclient \
-        imagick \
-        yaml \
-        swoole \
-        geoip \
-    ; \
-    \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
     ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
@@ -166,8 +163,7 @@ RUN set -ex; \
         | xargs -rt apt-mark manual \
     ; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/*; \
-    ls -l /usr/src
+    rm -rf /var/lib/apt/lists/*
 
 RUN set -ex; \
     \
