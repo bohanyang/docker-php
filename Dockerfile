@@ -42,15 +42,15 @@ RUN set -ex; \
     apt-get install -y --no-install-recommends \
         libaio1 \
         libbz2-dev \
-        libfreetype6-dev \
+        # libfreetype6-dev \
         libgmp-dev \
         libicu-dev \
-        libjpeg-dev \
+        # libjpeg-dev \
         libmaxminddb-dev \
         libmemcached-dev \
         libpng-dev \
         libpq-dev \
-        libwebp-dev \
+        # libwebp-dev \
         libzip-dev \
         zlib1g-dev \
         libldap2-dev \
@@ -89,10 +89,9 @@ RUN set -ex; \
     docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
     PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-configure gd \
-        --with-freetype=/usr \
-        --with-png=/usr \
-        --with-jpeg=/usr \
-        --with-webp=/usr \
+        --with-freetype \
+        --with-jpeg \
+        --with-webp \
     ; \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
