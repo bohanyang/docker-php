@@ -90,9 +90,9 @@ RUN set -ex; \
     PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-configure gd \
         --with-freetype=/usr \
-        --with-png-dir=/usr \
-        --with-jpeg-dir=/usr \
-        --with-webp-dir=/usr \
+        --with-png=/usr \
+        --with-jpeg=/usr \
+        --with-webp=/usr \
     ; \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
