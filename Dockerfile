@@ -123,6 +123,7 @@ RUN set -ex; \
     pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     mkdir -p /usr/src/php/ext; \
+    touch /usr/src/php/.docker-delete-me; \
     cd /usr/src/php/ext; \
     pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
     docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
