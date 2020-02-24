@@ -20,8 +20,8 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
-    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
+    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
+    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     INSTANTCLIENT_VERSION=19.6; \
     INSTANTCLIENT_DIR=instantclient_19_6; \
     PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
