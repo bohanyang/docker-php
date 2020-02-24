@@ -54,7 +54,7 @@ RUN set -ex; \
     #     libpq-dev \
     #     libwebp-dev \
     #     libzip-dev \
-    #     zlib1g-dev \
+        zlib1g-dev \
     #     libldap2-dev \
     #     libc-client-dev \
     #     libkrb5-dev \
