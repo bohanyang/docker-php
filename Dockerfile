@@ -38,6 +38,7 @@ RUN set -ex; \
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     PHP_EXT_SWOOLE_VERSION=4.4.16; \
     PHP_EXT_YAML_VERSION=2.0.4; \
+    PHP_EXT_ZSTD_VERSION=0.8.0; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
@@ -93,6 +94,7 @@ RUN set -ex; \
     pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
     pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
+    pecl install "zstd-$PHP_EXT_ZSTD_VERSION"; \
     \
     docker-php-ext-enable \
         apcu \
@@ -106,6 +108,7 @@ RUN set -ex; \
         smbclient \
         swoole \
         yaml \
+        zstd \
     ; \
     \
     mkdir -p /usr/src/php/ext; \
@@ -126,7 +129,7 @@ RUN set -ex; \
     PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
     docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
-    docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-lzf; \
+    docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
     \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
