@@ -42,6 +42,7 @@ RUN set -ex; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
+    echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         libaio1 \
@@ -66,6 +67,7 @@ RUN set -ex; \
         libzip-dev \
         zlib1g-dev \
     ; \
+    apt-get -t buster-backports -y install libzstd-dev; \
     \
     curl -fsSL \
         -o instantclient.zip "$INSTANTCLIENT_URL" \
@@ -94,7 +96,6 @@ RUN set -ex; \
     pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
     pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
-    pecl install "zstd-$PHP_EXT_ZSTD_VERSION"; \
     \
     docker-php-ext-enable \
         apcu \
@@ -108,7 +109,6 @@ RUN set -ex; \
         smbclient \
         swoole \
         yaml \
-        zstd \
     ; \
     \
     mkdir -p /usr/src/php/ext; \
@@ -122,6 +122,7 @@ RUN set -ex; \
     \
     pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
     pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
+    pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     \
@@ -130,6 +131,7 @@ RUN set -ex; \
     docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
     docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
     docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
+    docker-php-ext-configure zstd --with-libzstd; \
     \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
@@ -153,6 +155,7 @@ RUN set -ex; \
         sockets \
         xmlrpc \
         zip \
+        zstd \
 	; \
     \
     apt-mark auto '.*' > /dev/null; \
