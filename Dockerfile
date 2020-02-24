@@ -89,7 +89,7 @@ RUN set -ex; \
     docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
     PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-configure gd \
-        --with-freetype-dir=/usr \
+        --with-freetype=/usr \
         --with-png-dir=/usr \
         --with-jpeg-dir=/usr \
         --with-webp-dir=/usr \
