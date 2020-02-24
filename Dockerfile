@@ -30,6 +30,7 @@ RUN set -ex; \
     PHP_EXT_LZF_VERSION=1.6.7; \
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     PHP_EXT_MONGODB_VERSION=1.7.2; \
+    PHP_EXT_MSGPACK_VERSION=2.1.0beta1; \
     PHP_EXT_OCI8_VERSION=2.2.0; \
     PHP_EXT_REDIS_VERSION=5.1.1; \
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
@@ -117,13 +118,14 @@ RUN set -ex; \
     #     imap \
 	# ; \
     # \
-    # pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
+    pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
+    pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     mkdir -p /usr/src/php/ext; \
     cd /usr/src/php/ext; \
     pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
-    docker-php-ext-configure memcached --enable-memcached-igbinary; \
+    docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     # echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
     pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
@@ -136,11 +138,12 @@ RUN set -ex; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     \
 	docker-php-ext-enable \
-        # apcu \
+        apcu \
         igbinary \
         lzf \
         memcached \
         # mongodb \
+        msgpack \
         # oci8 \
         redis \
         # smbclient \
