@@ -101,18 +101,15 @@ RUN set -ex; \
     \
     curl -fsSL -o MaxMind-DB-Reader-php.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
     mkdir MaxMind-DB-Reader-php; \
-    tar -xf maxminddb.tar.gz -C MaxMind-DB-Reader-php --strip-components=1; \
+    tar -xf MaxMind-DB-Reader-php.tar.gz -C MaxMind-DB-Reader-php --strip-components=1; \
     mv MaxMind-DB-Reader-php/ext maxminddb; \
     \
     pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
     pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
     \
     debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
-    docker-php-ext-configure gd \
-        --with-freetype \
-        --with-jpeg \
-        --with-webp \
-    ; \
+    \
+    docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
     docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
