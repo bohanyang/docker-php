@@ -42,15 +42,15 @@ RUN set -ex; \
     apt-get install -y --no-install-recommends \
         libaio1 \
         libbz2-dev \
-        # libfreetype6-dev \
+        libfreetype6-dev \
         libgmp-dev \
         libicu-dev \
-        # libjpeg-dev \
+        libjpeg-dev \
         libmaxminddb-dev \
         libmemcached-dev \
         libpng-dev \
         libpq-dev \
-        # libwebp-dev \
+        libwebp-dev \
         libzip-dev \
         zlib1g-dev \
         libldap2-dev \
