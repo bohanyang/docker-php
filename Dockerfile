@@ -1,4 +1,4 @@
-FROM php:7.4.2-fpm-buster
+FROM php:7.4.3-fpm-buster
 
 RUN set -ex; \
     \
@@ -20,20 +20,20 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-basiclite-linux.x64-19.5.0.0.0dbru.zip; \
-    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/195000/instantclient-sdk-linux.x64-19.5.0.0.0dbru.zip; \
-    # INSTANTCLIENT_VERSION=19.5; \
-    # INSTANTCLIENT_DIR=instantclient_19_5; \
+    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
+    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
+    # INSTANTCLIENT_VERSION=19.6; \
+    # INSTANTCLIENT_DIR=instantclient_19_6; \
     # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     PHP_EXT_APCU_VERSION=5.1.18; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
-    # PHP_EXT_MONGODB_VERSION=1.6.1; \
+    # PHP_EXT_MONGODB_VERSION=1.7.2; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
     # PHP_EXT_REDIS_VERSION=5.1.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
-    # PHP_EXT_SWOOLE_VERSION=4.4.14; \
+    # PHP_EXT_SWOOLE_VERSION=4.4.16; \
     # PHP_EXT_GEOIP_VERSION=1.1.1; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
@@ -154,8 +154,8 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.9.2; \
-    COMPOSER_INSTALLER_VERSION=684f5c9db19cc4230f31b2d15ae6671bafdebd72; \
+    COMPOSER_VERSION=1.9.3; \
+    COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
