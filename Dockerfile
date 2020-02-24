@@ -1,6 +1,6 @@
 FROM php:7.4.3-fpm-buster
 
-RUN set -ex; \
+RUN set -ex; \ 
     \
     SU_EXEC_VERSION=212b75144bbc06722fbd7661f651390dc47a43d1; \
     \
@@ -20,49 +20,55 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
-    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/196000/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
+    # INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
+    # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     # INSTANTCLIENT_VERSION=19.6; \
     # INSTANTCLIENT_DIR=instantclient_19_6; \
-    # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     PHP_EXT_APCU_VERSION=5.1.18; \
+    # PHP_EXT_GEOIP_VERSION=1.1.1; \
+    # PHP_EXT_IGBINARY_VERSION=3.1.2; \
+    # PHP_EXT_IMAGICK_VERSION=3.4.4; \
+    # PHP_EXT_LZF_VERSION=1.6.7; \
+    # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # PHP_EXT_MONGODB_VERSION=1.7.2; \
+    # PHP_EXT_MSGPACK_VERSION=2.1.0beta1; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
     # PHP_EXT_REDIS_VERSION=5.1.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
-    # PHP_EXT_IMAGICK_VERSION=3.4.4; \
-    # PHP_EXT_YAML_VERSION=2.0.4; \
     # PHP_EXT_SWOOLE_VERSION=4.4.16; \
-    # PHP_EXT_GEOIP_VERSION=1.1.1; \
+    # PHP_EXT_YAML_VERSION=2.0.4; \
+    # PHP_EXT_ZSTD_VERSION=0.8.0; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
+    # echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # libaio1 \
         libbz2-dev \
+        # libc-client-dev \
         # libfreetype6-dev \
+        # libgeoip-dev \
         libgmp-dev \
         libicu-dev \
         # libjpeg-dev \
+        # libkrb5-dev \
+        # libldap2-dev \
+        # libmagickwand-dev \
         # libmaxminddb-dev \
         # libmemcached-dev \
         # libpng-dev \
         # libpq-dev \
-        # libwebp-dev \
-        libzip-dev \
-        # zlib1g-dev \
-        # libldap2-dev \
-        # libc-client-dev \
-        # libkrb5-dev \
-        # libxml2-dev \
         # libsmbclient-dev \
-        # libmagickwand-dev \
+        # libwebp-dev \
+        # libxml2-dev \
         # libyaml-dev \
-        # libgeoip-dev \
+        libzip-dev \
+        zlib1g-dev \
     ; \
-    \
+    # apt-get -t buster-backports -y install libzstd-dev; \
+    # \
     # curl -fsSL \
     #     -o instantclient.zip "$INSTANTCLIENT_URL" \
     #     -o instantclient-sdk.zip "$INSTANTCLIENT_SDK_URL" \
@@ -73,72 +79,85 @@ RUN set -ex; \
     #     instantclient.zip \
     #     instantclient-sdk.zip \
     # ; \
-    \
     # rm -rf "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib"; \
     # mkdir -p "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64"; \
     # mv "$INSTANTCLIENT_DIR" "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib"; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
-    # curl -fsSL -o maxminddb.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
-    # mkdir /usr/src/maxminddb; \
-    # tar -xf maxminddb.tar.gz -C /usr/src/maxminddb --strip-components=1; \
-    # rm maxminddb.tar.gz; \
+    pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
+    # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
+    # pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
+    # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
+    # pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
+    # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
+    # pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
+    # echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
+    # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
+    # pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
+    # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
     \
+    docker-php-ext-enable \
+        apcu \
+        # geoip \
+        # igbinary \
+        # imagick \
+        # lzf \
+        # mongodb \
+        # msgpack \
+        # oci8 \
+        # smbclient \
+        # swoole \
+        # yaml \
+    ; \
+    \
+    # mkdir -p /usr/src/php/ext; \
+    # touch /usr/src/php/.docker-delete-me; \
+    # cd /usr/src/php/ext; \
+    # \
+    # curl -fsSL -o MaxMind-DB-Reader-php.tar.gz "https://github.com/maxmind/MaxMind-DB-Reader-php/archive/v$PHP_EXT_MAXMINDDB_VERSION.tar.gz"; \
+    # mkdir MaxMind-DB-Reader-php; \
+    # tar -xf MaxMind-DB-Reader-php.tar.gz -C MaxMind-DB-Reader-php --strip-components=1; \
+    # mv MaxMind-DB-Reader-php/ext maxminddb; \
+    # \
+    # pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
+    # pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
+    # pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
+    # \
     # debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
-    # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
+    # \
+    # docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     # PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
-    # docker-php-ext-configure gd \
-    #     --with-freetype-dir=/usr \
-    #     --with-png-dir=/usr \
-    #     --with-jpeg-dir=/usr \
-    #     --with-webp-dir=/usr \
-    # ; \
+    # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
+    # docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
+    # docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
+    # docker-php-ext-configure zstd --with-libzstd; \
+    \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
         bz2 \
         exif \
-        # /usr/src/maxminddb/ext \
         # gd \
         gettext \
         gmp \
+        # imap \
         intl \
+        # ldap \
+        # maxminddb \
+        # memcached \
         mysqli \
         opcache \
         pcntl \
         pdo_mysql \
         # pdo_pgsql \
-        sockets \
-        zip \
-        # ldap \
+        # redis \
         # soap \
+        sockets \
         # xmlrpc \
-        # imap \
+        zip \
+        # zstd \
 	; \
     \
-    pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
-    # pecl install "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
-    # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
-    # echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
-    # pecl install "redis-$PHP_EXT_REDIS_VERSION"; \
-    # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
-    # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
-    # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
-    # pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
-    # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
-    \
-	docker-php-ext-enable \
-        apcu \
-        # memcached \
-        # mongodb \
-        # oci8 \
-        # redis \
-        # smbclient \
-        # imagick \
-        # yaml \
-        # swoole \
-        # geoip \
-    ; \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
     ldd "$(php -r 'echo ini_get("extension_dir");')"/*.so \
