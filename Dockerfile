@@ -1,6 +1,6 @@
 FROM php:7.4.3-fpm-buster
 
-RUN set -ex; \ 
+RUN set -ex; \
     \
     SU_EXEC_VERSION=212b75144bbc06722fbd7661f651390dc47a43d1; \
     \
