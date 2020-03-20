@@ -1,4 +1,4 @@
-FROM php:7.4.3-fpm-buster
+FROM php:7.4.4-fpm-buster
 
 RUN set -ex; \
     \
@@ -31,10 +31,10 @@ RUN set -ex; \
     # PHP_EXT_LZF_VERSION=1.6.7; \
     # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
-    # PHP_EXT_MONGODB_VERSION=1.7.2; \
-    # PHP_EXT_MSGPACK_VERSION=2.1.0beta1; \
+    # PHP_EXT_MONGODB_VERSION=1.7.4; \
+    # PHP_EXT_MSGPACK_VERSION=2.1.0; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
-    # PHP_EXT_REDIS_VERSION=5.1.1; \
+    # PHP_EXT_REDIS_VERSION=5.2.0; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # PHP_EXT_SWOOLE_VERSION=4.4.16; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
@@ -173,7 +173,7 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.9.3; \
+    COMPOSER_VERSION=1.10.1; \
     COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
