@@ -196,7 +196,7 @@ RUN set -ex; \
     \
     echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
-RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/7.4 \
+RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 \
     && mkdir -p /tmp/blackfire \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
