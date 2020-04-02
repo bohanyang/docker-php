@@ -196,12 +196,12 @@ RUN set -ex; \
     \
     echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
-RUN curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 \
-    && mkdir -p /tmp/blackfire \
-    && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
-    && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so \
-    && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://127.0.0.1:8707\n" > $PHP_INI_DIR/conf.d/blackfire.ini \
-    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+RUN curl -A 'Docker' -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 && \
+    mkdir -p /tmp/blackfire && \
+    tar -xpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
+    mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
+    echo 'extension=blackfire.so' > "$PHP_INI_DIR/conf.d/blackfire.ini" && \
+    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
