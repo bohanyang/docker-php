@@ -26,7 +26,7 @@ RUN set -ex; \
     # INSTANTCLIENT_DIR=instantclient_19_6; \
     PHP_EXT_APCU_VERSION=5.1.18; \
     # PHP_EXT_GEOIP_VERSION=1.1.1; \
-    # PHP_EXT_IGBINARY_VERSION=3.1.2; \
+    PHP_EXT_IGBINARY_VERSION=3.1.2; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # PHP_EXT_LZF_VERSION=1.6.7; \
     # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
@@ -87,7 +87,7 @@ RUN set -ex; \
     \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
-    # pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
+    pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
     # pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
@@ -100,7 +100,7 @@ RUN set -ex; \
     docker-php-ext-enable \
         apcu \
         # geoip \
-        # igbinary \
+        igbinary \
         # imagick \
         # lzf \
         # mongodb \
@@ -193,6 +193,8 @@ RUN set -ex; \
     echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
     \
     echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
+    \
+    sed -ri 's,access\.log =,;access\.log =,' /usr/local/etc/php-fpm.d/docker.conf; \
     \
     echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
