@@ -44,6 +44,7 @@ RUN set -ex; \
     savedAptMark="$(apt-mark showmanual)"; \
     \
     echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
+    echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         libaio1 \
@@ -69,6 +70,7 @@ RUN set -ex; \
         zlib1g-dev \
     ; \
     apt-get -t buster-backports -y install libzstd-dev; \
+    apt-get -t bullseye -y install librabbitmq4; \
     \
     curl -fsSL \
         -o instantclient.zip "$INSTANTCLIENT_URL" \
