@@ -71,7 +71,7 @@ RUN set -ex; \
         zlib1g-dev \
     ; \
     apt-get -t buster-backports -y install libzstd-dev; \
-    apt-get -t bullseye -y install librabbitmq4; \
+    apt-get -t bullseye -y install librabbitmq-dev; \
     \
     curl -fsSL \
         -o instantclient.zip "$INSTANTCLIENT_URL" \
