@@ -1,4 +1,4 @@
-FROM php:7.4.4-fpm-buster
+FROM php:7.4.5-fpm-buster
 
 RUN set -ex; \
     \
@@ -24,25 +24,28 @@ RUN set -ex; \
     # INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     # INSTANTCLIENT_VERSION=19.6; \
     # INSTANTCLIENT_DIR=instantclient_19_6; \
+    # PHP_EXT_AMQP_VERSION=1.10.2; \
     PHP_EXT_APCU_VERSION=5.1.18; \
     # PHP_EXT_GEOIP_VERSION=1.1.1; \
     PHP_EXT_IGBINARY_VERSION=3.1.2; \
     # PHP_EXT_IMAGICK_VERSION=3.4.4; \
-    # PHP_EXT_LZF_VERSION=1.6.7; \
+    # PHP_EXT_LZF_VERSION=1.6.8; \
     # PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
     # PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # PHP_EXT_MONGODB_VERSION=1.7.4; \
     # PHP_EXT_MSGPACK_VERSION=2.1.0; \
     # PHP_EXT_OCI8_VERSION=2.2.0; \
-    # PHP_EXT_REDIS_VERSION=5.2.0; \
+    # PHP_EXT_REDIS_VERSION=5.2.1; \
     # PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
-    # PHP_EXT_SWOOLE_VERSION=4.4.16; \
+    # PHP_EXT_SWOOLE_VERSION=4.4.17; \
     # PHP_EXT_YAML_VERSION=2.0.4; \
     # PHP_EXT_ZSTD_VERSION=0.8.0; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
+    # echo 'APT::Default-Release "buster";' >> /etc/apt/apt.conf; \
     # echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
+    # echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # libaio1 \
@@ -68,6 +71,7 @@ RUN set -ex; \
         zlib1g-dev \
     ; \
     # apt-get -t buster-backports -y install libzstd-dev; \
+    # apt-get -t bullseye -y install librabbitmq-dev; \
     # \
     # curl -fsSL \
     #     -o instantclient.zip "$INSTANTCLIENT_URL" \
@@ -85,6 +89,7 @@ RUN set -ex; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
+    # pecl install "amqp-$PHP_EXT_AMQP_VERSION"; \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
@@ -98,6 +103,7 @@ RUN set -ex; \
     # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
     \
     docker-php-ext-enable \
+        amqp \
         apcu \
         # geoip \
         igbinary \
@@ -173,7 +179,7 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.10.1; \
+    COMPOSER_VERSION=1.10.5; \
     COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
