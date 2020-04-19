@@ -43,6 +43,7 @@ RUN set -ex; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
+    echo 'APT::Default-Release "buster";' >> /etc/apt/apt.conf; \
     echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
     echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list; \
     apt-get update; \
