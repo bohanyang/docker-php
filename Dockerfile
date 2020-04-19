@@ -66,7 +66,6 @@ RUN set -ex; \
         libxml2-dev \
         libyaml-dev \
         libzip-dev \
-        rabbitmq-c-dev \
         zlib1g-dev \
     ; \
     apt-get -t buster-backports -y install libzstd-dev; \
