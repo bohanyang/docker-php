@@ -103,7 +103,7 @@ RUN set -ex; \
     # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
     \
     docker-php-ext-enable \
-        amqp \
+        # amqp \
         apcu \
         # geoip \
         igbinary \
