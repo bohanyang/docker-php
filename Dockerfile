@@ -24,6 +24,8 @@ RUN set -ex; \
     INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     INSTANTCLIENT_VERSION=19.6; \
     INSTANTCLIENT_DIR=instantclient_19_6; \
+    LIBZSTD_VERSION='1.4.4+dfsg-3~bpo10+1'; \
+    LIBRABBITMQ_VERSION='0.10.0-1'; \
     PHP_EXT_AMQP_VERSION=1.10.2; \
     PHP_EXT_APCU_VERSION=5.1.18; \
     PHP_EXT_GEOIP_VERSION=1.1.1; \
@@ -43,9 +45,11 @@ RUN set -ex; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
-    echo 'APT::Default-Release "buster";' >> /etc/apt/apt.conf; \
-    echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list; \
-    echo 'deb http://deb.debian.org/debian bullseye main' >> /etc/apt/sources.list; \
+    echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
+    echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list; \
+    printf "Package: *\nPin: release n=sid\nPin-Priority: 1\n" > /etc/apt/preferences.d/99sid; \
+    printf "Package: libzstd*\nPin: version $LIBZSTD_VERSION\nPin-Priority: 500\n" > /etc/apt/preferences.d/50libzstd; \
+    printf "Package: librabbitmq*\nPin: version $LIBRABBITMQ_VERSION\nPin-Priority: 500\n" > /etc/apt/preferences.d/50librabbitmq; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         libaio1 \
@@ -63,15 +67,15 @@ RUN set -ex; \
         libmemcached-dev \
         libpng-dev \
         libpq-dev \
+        librabbitmq-dev \
         libsmbclient-dev \
         libwebp-dev \
         libxml2-dev \
         libyaml-dev \
         libzip-dev \
+        libzstd-dev \
         zlib1g-dev \
     ; \
-    apt-get -t buster-backports -y install libzstd-dev; \
-    apt-get -t bullseye -y install librabbitmq-dev; \
     \
     curl -fsSL \
         -o instantclient.zip "$INSTANTCLIENT_URL" \
