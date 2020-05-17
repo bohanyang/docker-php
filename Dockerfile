@@ -120,7 +120,8 @@ RUN set -ex; \
     pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
-    echo '' | pecl install "oci8-$PHP_EXT_OCI8_VERSION"; \
+    # Skip prompt (autodetect) : /usr/lib/oracle/19.6/client64/lib
+    pecl install "oci8-$PHP_EXT_OCI8_VERSION" </dev/null; \
     pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
     pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
@@ -226,6 +227,13 @@ RUN set -ex; \
     echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
     \
     echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
+
+RUN curl -A 'Docker' -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 && \
+    mkdir -p /tmp/blackfire && \
+    tar -xpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
+    mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
+    echo 'extension=blackfire.so' > "$PHP_INI_DIR/conf.d/blackfire.ini" && \
+    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
