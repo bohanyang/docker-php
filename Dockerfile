@@ -1,4 +1,4 @@
-FROM php:7.4.5-fpm-buster
+FROM php:7.4.6-fpm-buster
 
 RUN set -ex; \
     \
@@ -20,27 +20,46 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
+    # https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
     INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
     INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
     INSTANTCLIENT_VERSION=19.6; \
     INSTANTCLIENT_DIR=instantclient_19_6; \
+    # https://packages.debian.org/buster-backports/libzstd-dev
     LIBZSTD_VERSION='1.4.4+dfsg-3~bpo10+1'; \
+    # https://packages.debian.org/sid/librabbitmq-dev
     LIBRABBITMQ_VERSION='0.10.0-1'; \
+    # https://pecl.php.net/package/amqp
     PHP_EXT_AMQP_VERSION=1.10.2; \
+    # https://pecl.php.net/package/APCu
     PHP_EXT_APCU_VERSION=5.1.18; \
+    # https://pecl.php.net/package/geoip
     PHP_EXT_GEOIP_VERSION=1.1.1; \
+    # https://pecl.php.net/package/igbinary
     PHP_EXT_IGBINARY_VERSION=3.1.2; \
+    # https://pecl.php.net/package/imagick
     PHP_EXT_IMAGICK_VERSION=3.4.4; \
+    # https://pecl.php.net/package/lzf
     PHP_EXT_LZF_VERSION=1.6.8; \
+    # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
     PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
+    # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
+    # https://pecl.php.net/package/mongodb
     PHP_EXT_MONGODB_VERSION=1.7.4; \
+    # https://pecl.php.net/package/msgpack
     PHP_EXT_MSGPACK_VERSION=2.1.0; \
+    # https://pecl.php.net/package/oci8
     PHP_EXT_OCI8_VERSION=2.2.0; \
-    PHP_EXT_REDIS_VERSION=5.2.1; \
+    # https://pecl.php.net/package/redis
+    PHP_EXT_REDIS_VERSION=5.2.2; \
+    # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
-    PHP_EXT_SWOOLE_VERSION=4.4.17; \
-    PHP_EXT_YAML_VERSION=2.0.4; \
+    # https://pecl.php.net/package/swoole
+    PHP_EXT_SWOOLE_VERSION=4.5.1; \
+    # https://pecl.php.net/package/yaml
+    PHP_EXT_YAML_VERSION=2.1.0; \
+    # https://pecl.php.net/package/zstd
     PHP_EXT_ZSTD_VERSION=0.8.0; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
@@ -183,7 +202,9 @@ RUN set -ex; \
 
 RUN set -ex; \
     \
-    COMPOSER_VERSION=1.10.5; \
+    # https://getcomposer.org/
+    COMPOSER_VERSION=1.10.6; \
+    # https://github.com/composer/getcomposer.org/blob/master/web/installer
     COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
