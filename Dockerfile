@@ -1,4 +1,4 @@
-FROM php:7.4.6-fpm-buster
+FROM php:7.4.7-fpm-buster
 
 RUN set -ex; \
     \
@@ -56,11 +56,11 @@ RUN set -ex; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
-    PHP_EXT_SWOOLE_VERSION=4.5.1; \
+    PHP_EXT_SWOOLE_VERSION=4.5.2; \
     # https://pecl.php.net/package/yaml
     PHP_EXT_YAML_VERSION=2.1.0; \
     # https://pecl.php.net/package/zstd
-    PHP_EXT_ZSTD_VERSION=0.8.0; \
+    PHP_EXT_ZSTD_VERSION=0.9.0; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
@@ -204,7 +204,7 @@ RUN set -ex; \
 RUN set -ex; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=1.10.6; \
+    COMPOSER_VERSION=1.10.7; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
     COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
     \
@@ -217,16 +217,16 @@ RUN set -ex; \
         echo 'opcache.max_accelerated_files=10000'; \
         echo 'opcache.memory_consumption=128'; \
         echo 'opcache.save_comments=1'; \
-        echo 'opcache.revalidate_freq=1'; \
+        echo 'opcache.revalidate_freq=2'; \
     } > /usr/local/etc/php/conf.d/opcache-recommended.ini; \
     \
     echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
     \
     echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
     \
-    echo 'max_execution_time=90' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
+    echo 'max_execution_time=60' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
     \
-    echo 'pm.max_children = 32' >> /usr/local/etc/php-fpm.d/zz-docker.conf
+    echo 'pm.max_children = 16' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
 RUN curl -A 'Docker' -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 && \
     mkdir -p /tmp/blackfire && \
