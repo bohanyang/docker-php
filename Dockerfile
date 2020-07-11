@@ -1,4 +1,4 @@
-FROM php:7.4.7-fpm-buster
+FROM php:7.4.8-fpm-buster
 
 RUN set -ex; \
     \
@@ -46,13 +46,13 @@ RUN set -ex; \
     # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # https://pecl.php.net/package/mongodb
-    PHP_EXT_MONGODB_VERSION=1.7.4; \
+    PHP_EXT_MONGODB_VERSION=1.7.5; \
     # https://pecl.php.net/package/msgpack
     PHP_EXT_MSGPACK_VERSION=2.1.0; \
     # https://pecl.php.net/package/oci8
     PHP_EXT_OCI8_VERSION=2.2.0; \
     # https://pecl.php.net/package/redis
-    PHP_EXT_REDIS_VERSION=5.2.2; \
+    PHP_EXT_REDIS_VERSION=5.3.1; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
