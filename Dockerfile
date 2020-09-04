@@ -86,13 +86,13 @@ RUN set -ex; \
         libmemcached-dev \
         libpng-dev \
         libpq-dev \
-        "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
+        librabbitmq-dev \
         libsmbclient-dev \
         libwebp-dev \
         libxml2-dev \
         libyaml-dev \
         libzip-dev \
-        "libzstd-dev=$LIBZSTD_VERSION" \
+        libzstd-dev \
         zlib1g-dev \
     ; \
     \
