@@ -4,7 +4,7 @@ set -e
 
 if [ -n "$PHP_FPM_LISTEN" ]; then
   if ! [ "$PHP_FPM_LISTEN" -eq "$PHP_FPM_LISTEN" ] 2> /dev/null; then
-    mkdir -p $(dirname "$PHP_FPM_LISTEN")
+    mkdir -p "$(dirname "$PHP_FPM_LISTEN")"
     {
       echo 'listen.owner = www-data'
       echo 'listen.group = www-data'
