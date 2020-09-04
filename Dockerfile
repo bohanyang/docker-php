@@ -1,4 +1,4 @@
-FROM php:7.4.8-fpm-buster
+FROM php:7.4.10-fpm-buster
 
 RUN set -ex; \
     \
@@ -21,14 +21,14 @@ RUN set -ex; \
 RUN set -ex; \
     \
     # https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
-    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip; \
-    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19600/instantclient-sdk-linux.x64-19.6.0.0.0dbru.zip; \
-    INSTANTCLIENT_VERSION=19.6; \
-    INSTANTCLIENT_DIR=instantclient_19_6; \
-    # https://packages.debian.org/buster-backports/libzstd-dev
-    LIBZSTD_VERSION='1.4.4+dfsg-3~bpo10+1'; \
+    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basiclite-linux.x64-19.8.0.0.0dbru.zip; \
+    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip; \
+    INSTANTCLIENT_VERSION=19.8; \
+    INSTANTCLIENT_DIR=instantclient_19_8; \
     # https://packages.debian.org/sid/librabbitmq-dev
     LIBRABBITMQ_VERSION='0.10.0-1'; \
+    # https://packages.debian.org/buster-backports/libzstd-dev
+    LIBZSTD_VERSION='1.4.4+dfsg-3~bpo10+1'; \
     # https://pecl.php.net/package/amqp
     PHP_EXT_AMQP_VERSION=1.10.2; \
     # https://pecl.php.net/package/APCu
@@ -36,19 +36,19 @@ RUN set -ex; \
     # https://pecl.php.net/package/geoip
     PHP_EXT_GEOIP_VERSION=1.1.1; \
     # https://pecl.php.net/package/igbinary
-    PHP_EXT_IGBINARY_VERSION=3.1.2; \
+    PHP_EXT_IGBINARY_VERSION=3.1.5; \
     # https://pecl.php.net/package/imagick
     PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # https://pecl.php.net/package/lzf
     PHP_EXT_LZF_VERSION=1.6.8; \
     # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
-    PHP_EXT_MAXMINDDB_VERSION=1.6.0; \
+    PHP_EXT_MAXMINDDB_VERSION=1.7.0; \
     # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # https://pecl.php.net/package/mongodb
-    PHP_EXT_MONGODB_VERSION=1.7.5; \
+    PHP_EXT_MONGODB_VERSION=1.8.0; \
     # https://pecl.php.net/package/msgpack
-    PHP_EXT_MSGPACK_VERSION=2.1.0; \
+    PHP_EXT_MSGPACK_VERSION=2.1.1; \
     # https://pecl.php.net/package/oci8
     PHP_EXT_OCI8_VERSION=2.2.0; \
     # https://pecl.php.net/package/redis
@@ -56,7 +56,7 @@ RUN set -ex; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
-    PHP_EXT_SWOOLE_VERSION=4.5.2; \
+    PHP_EXT_SWOOLE_VERSION=4.5.3; \
     # https://pecl.php.net/package/yaml
     PHP_EXT_YAML_VERSION=2.1.0; \
     # https://pecl.php.net/package/zstd
@@ -65,10 +65,10 @@ RUN set -ex; \
     savedAptMark="$(apt-mark showmanual)"; \
     \
     # echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
-    # echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list; \
-    # printf "Package: *\nPin: release n=sid\nPin-Priority: 1\n" > /etc/apt/preferences.d/99sid; \
-    # printf "Package: libzstd*\nPin: version $LIBZSTD_VERSION\nPin-Priority: 500\n" > /etc/apt/preferences.d/50libzstd; \
-    # printf "Package: librabbitmq*\nPin: version $LIBRABBITMQ_VERSION\nPin-Priority: 500\n" > /etc/apt/preferences.d/50librabbitmq; \
+    # echo 'deb http://deb.debian.org/debian unstable main' > /etc/apt/sources.list.d/unstable.list; \
+    # printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
+    # printf '%s\n%s\n%s\n' 'Package: librabbitmq*' 'Pin: release a=unstable' 'Pin-Priority: 500' > /etc/apt/preferences.d/50librabbitmq; \
+    # printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # libaio1 \
@@ -86,13 +86,13 @@ RUN set -ex; \
         # libmemcached-dev \
         # libpng-dev \
         # libpq-dev \
-        # librabbitmq-dev \
+        # "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
         # libsmbclient-dev \
         # libwebp-dev \
         # libxml2-dev \
         # libyaml-dev \
         libzip-dev \
-        # libzstd-dev \
+        # "libzstd-dev=$LIBZSTD_VERSION" \
         zlib1g-dev \
     ; \
     \
@@ -120,7 +120,7 @@ RUN set -ex; \
     # pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     # pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
-    # Skip prompt (autodetect) : /usr/lib/oracle/19.6/client64/lib
+    # Skip prompt (autodetect) : /usr/lib/oracle/19.8/client64/lib
     # pecl install "oci8-$PHP_EXT_OCI8_VERSION" </dev/null; \
     # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     # pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
@@ -204,9 +204,9 @@ RUN set -ex; \
 RUN set -ex; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=1.10.7; \
+    COMPOSER_VERSION=1.10.10; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    COMPOSER_INSTALLER_VERSION=99312bc6306564ac1f0ad2c6207c129b3aff58d6; \
+    COMPOSER_INSTALLER_VERSION=61ce3d7428126e268abb49b9cd8623b6e45ccff4; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
