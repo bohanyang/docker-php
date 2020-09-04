@@ -65,8 +65,10 @@ RUN set -ex; \
     savedAptMark="$(apt-mark showmanual)"; \
     \
     echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
-    echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list; \
-    printf "Package: *\nPin: release n=sid\nPin-Priority: 1\n" > /etc/apt/preferences.d/99sid; \
+    echo 'deb http://deb.debian.org/debian unstable main' > /etc/apt/sources.list.d/unstable.list; \
+    printf '%s' "Package: libzstd*\nPin: release a=buster-backports\nPin-Priority: 510\n" > /etc/apt/preferences.d/10libzstd; \
+    printf '%s' "Package: librabbitmq*\nPin: release a=unstable\nPin-Priority: 510\n" > /etc/apt/preferences.d/10librabbitmq; \
+    printf '%s' "Package: *\nPin: release a=unstable\nPin-Priority: 1\n" > /etc/apt/preferences.d/50unstable; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         libaio1 \
