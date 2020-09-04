@@ -67,7 +67,7 @@ RUN set -ex; \
     echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
     echo 'deb http://deb.debian.org/debian unstable main' > /etc/apt/sources.list.d/unstable.list; \
     printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
-    printf '%s\n%s\n%s\n' 'Package: librabbitmq*' 'Pin: release a=unstable' 'Pin-Priority: 50Z0' > /etc/apt/preferences.d/50librabbitmq; \
+    printf '%s\n%s\n%s\n' 'Package: librabbitmq*' 'Pin: release a=unstable' 'Pin-Priority: 500' > /etc/apt/preferences.d/50librabbitmq; \
     printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
