@@ -1,6 +1,6 @@
 FROM php:7.4.10-fpm-buster
 
-RUN set -ex; \
+RUN set -eux; \
     \
     SU_EXEC_VERSION=212b75144bbc06722fbd7661f651390dc47a43d1; \
     \
@@ -18,7 +18,7 @@ RUN set -ex; \
     mv "su-exec-$SU_EXEC_VERSION/su-exec" /usr/local/bin; \
     rm -r "su-exec-$SU_EXEC_VERSION"
 
-RUN set -ex; \
+RUN set -eux; \
     \
     # https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
     INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basiclite-linux.x64-19.8.0.0.0dbru.zip; \
@@ -201,12 +201,12 @@ RUN set -ex; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*
 
-RUN set -ex; \
+RUN set -eux; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=1.10.10; \
+    COMPOSER_VERSION=1.10.13; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    COMPOSER_INSTALLER_VERSION=61ce3d7428126e268abb49b9cd8623b6e45ccff4; \
+    COMPOSER_INSTALLER_VERSION=4074853c4cb6f2438a145ccd5863dbd78496383a; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
