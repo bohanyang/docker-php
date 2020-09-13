@@ -83,7 +83,7 @@ RUN set -eux; \
         # libldap2-dev \
         # libmagickwand-dev \
         # libmaxminddb-dev \
-        # libmemcached-dev \
+        libmemcached-dev \
         libpng-dev \
         # libpq-dev \
         # "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
