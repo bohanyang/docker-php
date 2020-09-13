@@ -64,35 +64,35 @@ RUN set -eux; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
-    # echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
+    echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
     # echo 'deb http://deb.debian.org/debian unstable main' > /etc/apt/sources.list.d/unstable.list; \
-    # printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
+    printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
     # printf '%s\n%s\n%s\n' 'Package: librabbitmq*' 'Pin: release a=unstable' 'Pin-Priority: 500' > /etc/apt/preferences.d/50librabbitmq; \
-    # printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
+    printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
         # libaio1 \
         libbz2-dev \
         # libc-client-dev \
-        # libfreetype6-dev \
+        libfreetype6-dev \
         # libgeoip-dev \
         libgmp-dev \
         libicu-dev \
-        # libjpeg-dev \
+        libjpeg-dev \
         # libkrb5-dev \
         # libldap2-dev \
         # libmagickwand-dev \
         # libmaxminddb-dev \
         # libmemcached-dev \
-        # libpng-dev \
+        libpng-dev \
         # libpq-dev \
         # "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
         # libsmbclient-dev \
-        # libwebp-dev \
+        libwebp-dev \
         # libxml2-dev \
         # libyaml-dev \
         libzip-dev \
-        # "libzstd-dev=$LIBZSTD_VERSION" \
+        "libzstd-dev=$LIBZSTD_VERSION" \
         zlib1g-dev \
     ; \
     \
@@ -117,9 +117,9 @@ RUN set -eux; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
-    # pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
+    pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
-    # pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
+    pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     # Skip prompt (autodetect) : /usr/lib/oracle/19.8/client64/lib
     # pecl install "oci8-$PHP_EXT_OCI8_VERSION" </dev/null; \
     # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
@@ -132,9 +132,9 @@ RUN set -eux; \
         # geoip \
         igbinary \
         # imagick \
-        # lzf \
+        lzf \
         # mongodb \
-        # msgpack \
+        msgpack \
         # oci8 \
         # smbclient \
         # swoole \
@@ -150,42 +150,42 @@ RUN set -eux; \
     # tar -xf MaxMind-DB-Reader-php.tar.gz -C MaxMind-DB-Reader-php --strip-components=1; \
     # mv MaxMind-DB-Reader-php/ext maxminddb; \
     # \
-    # pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
-    # pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
-    # pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
+    pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
+    pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
+    pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
     # \
     # debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     # \
-    # docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
+    docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     # PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
-    # docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
-    # docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
-    # docker-php-ext-configure zstd --with-libzstd; \
+    docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
+    docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
+    docker-php-ext-configure zstd --with-libzstd; \
     \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
         bz2 \
         exif \
-        # gd \
+        gd \
         gettext \
         gmp \
         # imap \
         intl \
         # ldap \
         # maxminddb \
-        # memcached \
-        # mysqli \
+        memcached \
+        mysqli \
         opcache \
         pcntl \
-        # pdo_mysql \
+        pdo_mysql \
         # pdo_pgsql \
-        # redis \
+        redis \
         # soap \
         # sockets \
         # xmlrpc \
         zip \
-        # zstd \
+        zstd \
 	; \
     \
     apt-mark auto '.*' > /dev/null; \
