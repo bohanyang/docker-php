@@ -1,4 +1,4 @@
-FROM php:7.4.10-fpm-buster
+FROM php:7.4.11-fpm-buster
 
 RUN set -eux; \
     \
@@ -42,7 +42,7 @@ RUN set -eux; \
     # https://pecl.php.net/package/lzf
     PHP_EXT_LZF_VERSION=1.6.8; \
     # https://github.com/maxmind/MaxMind-DB-Reader-php/releases
-    PHP_EXT_MAXMINDDB_VERSION=1.7.0; \
+    PHP_EXT_MAXMINDDB_VERSION=1.8.0; \
     # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # https://pecl.php.net/package/mongodb
@@ -56,7 +56,7 @@ RUN set -eux; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
-    PHP_EXT_SWOOLE_VERSION=4.5.3; \
+    PHP_EXT_SWOOLE_VERSION=4.5.4; \
     # https://pecl.php.net/package/yaml
     PHP_EXT_YAML_VERSION=2.1.0; \
     # https://pecl.php.net/package/zstd
