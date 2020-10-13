@@ -91,6 +91,7 @@ RUN set -eux; \
         # libpq-dev \
         # "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
         # libsmbclient-dev \
+        libssl-dev \
         libwebp-dev \
         # libxml2-dev \
         # libyaml-dev \
