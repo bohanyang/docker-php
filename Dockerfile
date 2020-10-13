@@ -115,6 +115,7 @@ RUN set -eux; \
     echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     ldconfig; \
     \
+    docker-php-ext-install -j "$(nproc)" sockets; \
     pecl install "amqp-$PHP_EXT_AMQP_VERSION"; \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
     pecl install "event-$PHP_EXT_EVENT_VERSION"; \
@@ -187,7 +188,6 @@ RUN set -eux; \
         pdo_pgsql \
         redis \
         soap \
-        sockets \
         xmlrpc \
         zip \
         zstd \
