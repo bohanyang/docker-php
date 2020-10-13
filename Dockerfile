@@ -76,6 +76,7 @@ RUN set -eux; \
         libaio1 \
         libbz2-dev \
         libc-client-dev \
+        libevent-dev \
         libfreetype6-dev \
         libgeoip-dev \
         libgmp-dev \
