@@ -32,11 +32,13 @@ RUN set -eux; \
     # https://pecl.php.net/package/amqp
     PHP_EXT_AMQP_VERSION=1.10.2; \
     # https://pecl.php.net/package/APCu
-    PHP_EXT_APCU_VERSION=5.1.18; \
+    PHP_EXT_APCU_VERSION=5.1.19; \
+    # https://pecl.php.net/package/event
+    PHP_EXT_EVENT_VERSION=2.5.7; \
     # https://pecl.php.net/package/geoip
     PHP_EXT_GEOIP_VERSION=1.1.1; \
     # https://pecl.php.net/package/igbinary
-    PHP_EXT_IGBINARY_VERSION=3.1.5; \
+    PHP_EXT_IGBINARY_VERSION=3.1.6; \
     # https://pecl.php.net/package/imagick
     PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # https://pecl.php.net/package/lzf
@@ -46,7 +48,7 @@ RUN set -eux; \
     # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # https://pecl.php.net/package/mongodb
-    PHP_EXT_MONGODB_VERSION=1.8.0; \
+    PHP_EXT_MONGODB_VERSION=1.8.1; \
     # https://pecl.php.net/package/msgpack
     PHP_EXT_MSGPACK_VERSION=2.1.1; \
     # https://pecl.php.net/package/oci8
@@ -74,6 +76,7 @@ RUN set -eux; \
         # libaio1 \
         libbz2-dev \
         # libc-client-dev \
+        libevent-dev \
         libfreetype6-dev \
         # libgeoip-dev \
         libgmp-dev \
@@ -112,8 +115,10 @@ RUN set -eux; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
+    docker-php-ext-install -j "$(nproc)" sockets; \
     # pecl install "amqp-$PHP_EXT_AMQP_VERSION"; \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
+    pecl install "event-$PHP_EXT_EVENT_VERSION"; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
@@ -129,6 +134,7 @@ RUN set -eux; \
     docker-php-ext-enable \
         # amqp \
         apcu \
+        event \
         # geoip \
         igbinary \
         # imagick \
@@ -182,7 +188,6 @@ RUN set -eux; \
         # pdo_pgsql \
         redis \
         # soap \
-        # sockets \
         # xmlrpc \
         zip \
         zstd \
