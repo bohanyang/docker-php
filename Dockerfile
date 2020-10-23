@@ -78,7 +78,7 @@ RUN set -eux; \
         # libaio1 \
         libbz2-dev \
         # libc-client-dev \
-        # libevent-dev \
+        libevent-dev \
         libfreetype6-dev \
         # libgeoip-dev \
         libgmp-dev \
@@ -118,11 +118,11 @@ RUN set -eux; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
-    # docker-php-ext-install -j "$(nproc)" sockets; \
+    docker-php-ext-install -j "$(nproc)" sockets; \
     # pecl install "amqp-$PHP_EXT_AMQP_VERSION"; \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
-    pecl install "ev-$PHP_EXT_EV_VERSION"; \
-    # pecl install "event-$PHP_EXT_EVENT_VERSION"; \
+    # pecl install "ev-$PHP_EXT_EV_VERSION"; \
+    pecl install "event-$PHP_EXT_EVENT_VERSION"; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
@@ -138,8 +138,8 @@ RUN set -eux; \
     docker-php-ext-enable \
         # amqp \
         apcu \
-        ev \
-        # event \
+        # ev \
+        event \
         # geoip \
         igbinary \
         # imagick \
