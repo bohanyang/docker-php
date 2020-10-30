@@ -21,10 +21,10 @@ RUN set -eux; \
 RUN set -eux; \
     \
     # https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
-    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-basiclite-linux.x64-19.8.0.0.0dbru.zip; \
-    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/19800/instantclient-sdk-linux.x64-19.8.0.0.0dbru.zip; \
-    INSTANTCLIENT_VERSION=19.8; \
-    INSTANTCLIENT_DIR=instantclient_19_8; \
+    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/199000/instantclient-basiclite-linux.x64-19.9.0.0.0dbru.zip; \
+    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/199000/instantclient-sdk-linux.x64-19.9.0.0.0dbru.zip; \
+    INSTANTCLIENT_VERSION=19.9; \
+    INSTANTCLIENT_DIR=instantclient_19_9; \
     # https://packages.debian.org/sid/librabbitmq-dev
     LIBRABBITMQ_VERSION='0.10.0-1'; \
     # https://packages.debian.org/buster-backports/libzstd-dev
@@ -53,14 +53,12 @@ RUN set -eux; \
     PHP_EXT_MONGODB_VERSION=1.8.1; \
     # https://pecl.php.net/package/msgpack
     PHP_EXT_MSGPACK_VERSION=2.1.1; \
-    # https://pecl.php.net/package/oci8
-    PHP_EXT_OCI8_VERSION=2.2.0; \
     # https://pecl.php.net/package/redis
-    PHP_EXT_REDIS_VERSION=5.3.1; \
+    PHP_EXT_REDIS_VERSION=5.3.2; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
-    PHP_EXT_SWOOLE_VERSION=4.5.4; \
+    PHP_EXT_SWOOLE_VERSION=4.5.5; \
     # https://pecl.php.net/package/yaml
     PHP_EXT_YAML_VERSION=2.1.0; \
     # https://pecl.php.net/package/zstd
@@ -118,19 +116,14 @@ RUN set -eux; \
     # echo "/usr/lib/oracle/$INSTANTCLIENT_VERSION/client64/lib" > /etc/ld.so.conf.d/oracle-instantclient.conf; \
     # ldconfig; \
     \
-    docker-php-ext-install -j "$(nproc)" sockets; \
     # pecl install "amqp-$PHP_EXT_AMQP_VERSION"; \
     pecl install "APCu-$PHP_EXT_APCU_VERSION"; \
-    # pecl install "ev-$PHP_EXT_EV_VERSION"; \
-    pecl install "event-$PHP_EXT_EVENT_VERSION"; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
     pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
-    # Skip prompt (autodetect) : /usr/lib/oracle/19.8/client64/lib
-    # pecl install "oci8-$PHP_EXT_OCI8_VERSION" </dev/null; \
     # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
     # pecl install "swoole-$PHP_EXT_SWOOLE_VERSION"; \
     # pecl install "yaml-$PHP_EXT_YAML_VERSION"; \
@@ -138,15 +131,12 @@ RUN set -eux; \
     docker-php-ext-enable \
         # amqp \
         apcu \
-        # ev \
-        event \
         # geoip \
         igbinary \
         # imagick \
         lzf \
         # mongodb \
         msgpack \
-        # oci8 \
         # smbclient \
         # swoole \
         # yaml \
@@ -187,16 +177,20 @@ RUN set -eux; \
         # maxminddb \
         memcached \
         mysqli \
+        oci8 \
         opcache \
         pcntl \
         pdo_mysql \
         # pdo_pgsql \
         redis \
         # soap \
+        sockets \
         # xmlrpc \
         zip \
         zstd \
 	; \
+    pecl install "event-$PHP_EXT_EVENT_VERSION"; \
+    docker-php-ext-enable event; \
     \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
@@ -214,9 +208,9 @@ RUN set -eux; \
 RUN set -eux; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=1.10.13; \
+    COMPOSER_VERSION=2.0.3; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    COMPOSER_INSTALLER_VERSION=4074853c4cb6f2438a145ccd5863dbd78496383a; \
+    COMPOSER_INSTALLER_VERSION=c4c8b0401b815b17341509096700c00c48d72a7e; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
