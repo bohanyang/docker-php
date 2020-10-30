@@ -177,7 +177,7 @@ RUN set -eux; \
         # maxminddb \
         memcached \
         mysqli \
-        oci8 \
+        # oci8 \
         opcache \
         pcntl \
         pdo_mysql \
