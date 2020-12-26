@@ -1,4 +1,4 @@
-FROM php:7.4.12-fpm-buster
+FROM php:7.4.13-fpm-buster
 
 RUN set -eux; \
     \
@@ -21,10 +21,10 @@ RUN set -eux; \
 RUN set -eux; \
     \
     # https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html
-    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/199000/instantclient-basiclite-linux.x64-19.9.0.0.0dbru.zip; \
-    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/199000/instantclient-sdk-linux.x64-19.9.0.0.0dbru.zip; \
-    INSTANTCLIENT_VERSION=19.9; \
-    INSTANTCLIENT_DIR=instantclient_19_9; \
+    INSTANTCLIENT_URL=https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basiclite-linux.x64-21.1.0.0.0.zip; \
+    INSTANTCLIENT_SDK_URL=https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-sdk-linux.x64-21.1.0.0.0.zip; \
+    INSTANTCLIENT_VERSION=21.1; \
+    INSTANTCLIENT_DIR=instantclient_21_1; \
     # https://packages.debian.org/sid/librabbitmq-dev
     LIBRABBITMQ_VERSION='0.10.0-1'; \
     # https://packages.debian.org/buster-backports/libzstd-dev
@@ -48,17 +48,17 @@ RUN set -eux; \
     # https://pecl.php.net/package/memcached
     PHP_EXT_MEMCACHED_VERSION=3.1.5; \
     # https://pecl.php.net/package/mongodb
-    PHP_EXT_MONGODB_VERSION=1.8.1; \
+    PHP_EXT_MONGODB_VERSION=1.9.0; \
     # https://pecl.php.net/package/msgpack
-    PHP_EXT_MSGPACK_VERSION=2.1.1; \
+    PHP_EXT_MSGPACK_VERSION=2.1.2; \
     # https://pecl.php.net/package/redis
     PHP_EXT_REDIS_VERSION=5.3.2; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
-    PHP_EXT_SWOOLE_VERSION=4.5.5; \
+    PHP_EXT_SWOOLE_VERSION=4.5.10; \
     # https://pecl.php.net/package/yaml
-    PHP_EXT_YAML_VERSION=2.1.0; \
+    PHP_EXT_YAML_VERSION=2.2.1; \
     # https://pecl.php.net/package/zstd
     PHP_EXT_ZSTD_VERSION=0.9.0; \
     \
@@ -206,9 +206,9 @@ RUN set -eux; \
 RUN set -eux; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=2.0.3; \
+    COMPOSER_VERSION=2.0.8; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    COMPOSER_INSTALLER_VERSION=c4c8b0401b815b17341509096700c00c48d72a7e; \
+    COMPOSER_INSTALLER_VERSION=459bcaab2cc03f1656dd7b065d500d0cf3070e3f; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
