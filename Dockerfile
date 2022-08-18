@@ -79,8 +79,8 @@ RUN set -eux; \
         libevent-dev \
         # libfreetype6-dev \
         # libgeoip-dev \
-        # libgmp-dev \
-        # libicu-dev \
+        libgmp-dev \
+        libicu-dev \
         # libjpeg-dev \
         # libkrb5-dev \
         # libldap2-dev \
