@@ -1,4 +1,4 @@
-FROM php:8.1.13-cli-bullseye
+FROM php:8.1.9-cli-bullseye
 
 RUN set -eux; \
     \
