@@ -1,4 +1,4 @@
-FROM php:7.4.13-fpm-buster
+FROM php:8.1.13-cli-bullseye
 
 RUN set -eux; \
     \
@@ -32,15 +32,15 @@ RUN set -eux; \
     # https://pecl.php.net/package/amqp
     PHP_EXT_AMQP_VERSION=1.10.2; \
     # https://pecl.php.net/package/APCu
-    PHP_EXT_APCU_VERSION=5.1.19; \
+    PHP_EXT_APCU_VERSION=5.1.21; \
     # https://pecl.php.net/package/ev
     PHP_EXT_EV_VERSION=1.0.9; \
     # https://pecl.php.net/package/event
-    PHP_EXT_EVENT_VERSION=2.5.7; \
+    PHP_EXT_EVENT_VERSION=3.0.8; \
     # https://pecl.php.net/package/geoip
     PHP_EXT_GEOIP_VERSION=1.1.1; \
     # https://pecl.php.net/package/igbinary
-    PHP_EXT_IGBINARY_VERSION=3.1.6; \
+    PHP_EXT_IGBINARY_VERSION=3.2.7; \
     # https://pecl.php.net/package/imagick
     PHP_EXT_IMAGICK_VERSION=3.4.4; \
     # https://pecl.php.net/package/lzf
@@ -54,7 +54,7 @@ RUN set -eux; \
     # https://pecl.php.net/package/msgpack
     PHP_EXT_MSGPACK_VERSION=2.1.2; \
     # https://pecl.php.net/package/redis
-    PHP_EXT_REDIS_VERSION=5.3.2; \
+    PHP_EXT_REDIS_VERSION=5.3.7; \
     # https://pecl.php.net/package/smbclient
     PHP_EXT_SMBCLIENT_VERSION=1.0.0; \
     # https://pecl.php.net/package/swoole
@@ -66,37 +66,37 @@ RUN set -eux; \
     \
     savedAptMark="$(apt-mark showmanual)"; \
     \
-    echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
+    # echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list; \
     # echo 'deb http://deb.debian.org/debian unstable main' > /etc/apt/sources.list.d/unstable.list; \
-    printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
+    # printf '%s\n%s\n%s\n' 'Package: *' 'Pin: release a=unstable' 'Pin-Priority: 1' > /etc/apt/preferences.d/10unstable; \
     # printf '%s\n%s\n%s\n' 'Package: librabbitmq*' 'Pin: release a=unstable' 'Pin-Priority: 500' > /etc/apt/preferences.d/50librabbitmq; \
-    printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
+    # printf '%s\n%s\n%s\n' 'Package: libzstd*' 'Pin: release a=buster-backports' 'Pin-Priority: 500' > /etc/apt/preferences.d/50libzstd; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        # libaio1 \
+        libaio1 \
         libbz2-dev \
         # libc-client-dev \
         libevent-dev \
-        libfreetype6-dev \
+        # libfreetype6-dev \
         # libgeoip-dev \
-        libgmp-dev \
-        libicu-dev \
-        libjpeg-dev \
+        # libgmp-dev \
+        # libicu-dev \
+        # libjpeg-dev \
         # libkrb5-dev \
         # libldap2-dev \
         # libmagickwand-dev \
         # libmaxminddb-dev \
-        libmemcached-dev \
-        libpng-dev \
+        # libmemcached-dev \
+        # libpng-dev \
         # libpq-dev \
         # "librabbitmq-dev=$LIBRABBITMQ_VERSION" \
         # libsmbclient-dev \
         libssl-dev \
-        libwebp-dev \
-        # libxml2-dev \
+        # libwebp-dev \
+        libxml2-dev \
         # libyaml-dev \
         libzip-dev \
-        "libzstd-dev=$LIBZSTD_VERSION" \
+        # "libzstd-dev=$LIBZSTD_VERSION" \
         zlib1g-dev \
     ; \
     \
@@ -121,7 +121,7 @@ RUN set -eux; \
     # pecl install "geoip-$PHP_EXT_GEOIP_VERSION"; \
     pecl install "igbinary-$PHP_EXT_IGBINARY_VERSION"; \
     # pecl install "imagick-$PHP_EXT_IMAGICK_VERSION"; \
-    pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
+    # pecl install "lzf-$PHP_EXT_LZF_VERSION"; \
     # pecl install "mongodb-$PHP_EXT_MONGODB_VERSION"; \
     pecl install "msgpack-$PHP_EXT_MSGPACK_VERSION"; \
     # pecl install "smbclient-$PHP_EXT_SMBCLIENT_VERSION"; \
@@ -134,7 +134,7 @@ RUN set -eux; \
         # geoip \
         igbinary \
         # imagick \
-        lzf \
+        # lzf \
         # mongodb \
         msgpack \
         # smbclient \
@@ -151,31 +151,36 @@ RUN set -eux; \
     # tar -xf MaxMind-DB-Reader-php.tar.gz -C MaxMind-DB-Reader-php --strip-components=1; \
     # mv MaxMind-DB-Reader-php/ext maxminddb; \
     # \
-    pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
+    # pecl bundle "memcached-$PHP_EXT_MEMCACHED_VERSION"; \
     pecl bundle "redis-$PHP_EXT_REDIS_VERSION"; \
-    pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
+    # pecl bundle "zstd-$PHP_EXT_ZSTD_VERSION"; \
     \
     # debMultiarch="$(dpkg-architecture --query DEB_BUILD_MULTIARCH)"; \
     # \
-    docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
+    # docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp; \
     # PHP_OPENSSL=yes docker-php-ext-configure imap --with-kerberos --with-imap-ssl; \
     # docker-php-ext-configure ldap --with-libdir="lib/$debMultiarch"; \
-    docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
-    docker-php-ext-configure redis --enable-redis-igbinary --enable-redis-msgpack --enable-redis-lzf --enable-redis-zstd; \
-    docker-php-ext-configure zstd --with-libzstd; \
+    # docker-php-ext-configure memcached --enable-memcached-json --enable-memcached-msgpack --enable-memcached-igbinary; \
+    docker-php-ext-configure redis \
+        --enable-redis-igbinary \
+        --enable-redis-msgpack \
+        # --enable-redis-lzf \
+        # --enable-redis-zstd \
+    ; \
+    # docker-php-ext-configure zstd --with-libzstd; \
     \
     docker-php-ext-install -j "$(nproc)" \
         bcmath \
         bz2 \
         exif \
-        gd \
+        # gd \
         gettext \
         gmp \
         # imap \
         intl \
         # ldap \
         # maxminddb \
-        memcached \
+        # memcached \
         mysqli \
         # oci8 \
         opcache \
@@ -185,9 +190,9 @@ RUN set -eux; \
         redis \
         # soap \
         sockets \
-        # xmlrpc \
+        xmlrpc \
         zip \
-        zstd \
+        # zstd \
 	; \
     pecl install "event-$PHP_EXT_EVENT_VERSION"; \
     docker-php-ext-enable event; \
@@ -208,9 +213,9 @@ RUN set -eux; \
 RUN set -eux; \
     \
     # https://getcomposer.org/
-    COMPOSER_VERSION=2.0.8; \
+    COMPOSER_VERSION=2.4.0; \
     # https://github.com/composer/getcomposer.org/blob/master/web/installer
-    COMPOSER_INSTALLER_VERSION=459bcaab2cc03f1656dd7b065d500d0cf3070e3f; \
+    COMPOSER_INSTALLER_VERSION=0a51b6fe383f7f61cf1d250c742ec655aa044c94; \
     \
     curl -fsSL "https://raw.githubusercontent.com/composer/getcomposer.org/$COMPOSER_INSTALLER_VERSION/web/installer" | php -- --quiet --install-dir=/usr/local/bin --filename=composer --version="$COMPOSER_VERSION"; \
     \
@@ -224,24 +229,24 @@ RUN set -eux; \
         echo 'opcache.revalidate_freq=2'; \
     } > /usr/local/etc/php/conf.d/opcache-recommended.ini; \
     \
-    echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini; \
-    \
-    echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
-    \
-    echo 'max_execution_time=60' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
-    \
-    sed -ri 's,access\.log =,;access\.log =,' /usr/local/etc/php-fpm.d/docker.conf; \
-    \
-    echo 'pm.max_children = 16' >> /usr/local/etc/php-fpm.d/zz-docker.conf
+    echo 'apc.enable_cli=1' >> /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini
+    # \
+    # echo 'memory_limit=512M' > /usr/local/etc/php/conf.d/memory-limit.ini; \
+    # \
+    # echo 'max_execution_time=60' > /usr/local/etc/php/conf.d/max-execution-time.ini; \
+    # \
+    # sed -ri 's,access\.log =,;access\.log =,' /usr/local/etc/php-fpm.d/docker.conf; \
+    # \
+    # echo 'pm.max_children = 16' >> /usr/local/etc/php-fpm.d/zz-docker.conf
 
-RUN curl -A 'Docker' -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 && \
-    mkdir -p /tmp/blackfire && \
-    tar -xpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
-    mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
-    echo 'extension=blackfire.so' > "$PHP_INI_DIR/conf.d/blackfire.ini" && \
-    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+# RUN curl -A 'Docker' -o /tmp/blackfire-probe.tar.gz -D - -L -s https://blackfire.io/api/v1/releases/probe/php/linux/amd64/74 && \
+#     mkdir -p /tmp/blackfire && \
+#     tar -xpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
+#     mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get ('extension_dir');")/blackfire.so && \
+#     echo 'extension=blackfire.so' > "$PHP_INI_DIR/conf.d/blackfire.ini" && \
+#     rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
 
 COPY docker-entrypoint.sh /usr/local/bin
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["php-fpm"]
+CMD ["php", "-a"]

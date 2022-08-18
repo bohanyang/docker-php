@@ -6,23 +6,26 @@ on:
       - "v*"
 
 env:
-  DOCKER_HUB_USERNAME: bohan
-  DOCKER_IMAGE_REPO: bohan/php
+  IMAGE_NAME: php
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v1
-      - name: Login
-        run: docker login -u "$DOCKER_HUB_USERNAME" -p "${{ secrets.DOCKER_HUB_PASSWORD }}"
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag "$DOCKER_IMAGE_REPO:latest"
-      - name: Test
-        run: docker run --rm "$DOCKER_IMAGE_REPO:latest" php -i
-      - name: Tag
-        run: docker tag "$DOCKER_IMAGE_REPO:latest" "$DOCKER_IMAGE_REPO:${GITHUB_REF##*/v}"
-      - name: Push
-        run: |
-          docker push "$DOCKER_IMAGE_REPO:${GITHUB_REF##*/v}";
-          docker push "$DOCKER_IMAGE_REPO:latest"
+      - uses: actions/checkout@v2
+
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Set version tag
+        run: echo "IMAGE_VERSION=${GITHUB_REF##*/v}" >> $GITHUB_ENV
+
+      - name: Build images
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          file: ./Dockerfile
+          tags: |
+            "ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest"
+            "ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_VERSION }}"
