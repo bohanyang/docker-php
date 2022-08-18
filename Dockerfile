@@ -76,7 +76,7 @@ RUN set -eux; \
         libaio1 \
         libbz2-dev \
         # libc-client-dev \
-        libevent-dev \
+        # libevent-dev \
         # libfreetype6-dev \
         # libgeoip-dev \
         libgmp-dev \
@@ -194,8 +194,8 @@ RUN set -eux; \
         zip \
         # zstd \
 	; \
-    pecl install "event-$PHP_EXT_EVENT_VERSION"; \
-    docker-php-ext-enable event; \
+    # pecl install "event-$PHP_EXT_EVENT_VERSION"; \
+    # docker-php-ext-enable event; \
     \
     apt-mark auto '.*' > /dev/null; \
     apt-mark manual $savedAptMark; \
