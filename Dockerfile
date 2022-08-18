@@ -190,6 +190,7 @@ RUN set -eux; \
         redis \
         # soap \
         sockets \
+        sysvmsg \
         # xmlrpc \
         zip \
         # zstd \
