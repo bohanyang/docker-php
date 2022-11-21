@@ -1,6 +1,6 @@
 FROM php:8.1.12-cli-bullseye
 
-RUN set -eux; \
+RUN set -ex; \
     \
     SU_EXEC_VERSION=212b75144bbc06722fbd7661f651390dc47a43d1; \
     \
@@ -20,24 +20,28 @@ RUN set -eux; \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/download/1.5.47/install-php-extensions /usr/local/bin/
 
-RUN install-php-extensions \
-    apcu \
-    bcmath \
-    bz2 \
-    event \
-    igbinary \
-    intl \
-    oci8 \
-    pcntl \
-    pdo_mysql \
-    pdo_pgsql \
-    redis \
-    sockets \
-    sysvsem \
-    opcache \
-    zip
+RUN set -ex; \
+    \
+    chmod a+rx /usr/local/bin/install-php-extensions; \
+    \
+    install-php-extensions \
+        apcu \
+        bcmath \
+        bz2 \
+        event \
+        igbinary \
+        intl \
+        oci8 \
+        pcntl \
+        pdo_mysql \
+        pdo_pgsql \
+        redis \
+        sockets \
+        sysvsem \
+        opcache \
+        zip
 
-RUN set -eux; \
+RUN set -ex; \
     \
     # https://getcomposer.org/
     COMPOSER_VERSION=2.4.4; \
